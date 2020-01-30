@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+	<Button
+		android:text="Ver lista de productos"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:minWidth="25px"
+		android:minHeight="25px"
+		android:id="@+id/btnProductosServerVer" />
+	<Button
+		android:text="sincronizar productos"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:id="@+id/btnProductosServerSincronizar" />
+	<!--<ProgressBar
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:id="@+id/pgbProductosProgreso"
+		
+        android:max="100"
+		android:min="1"
+        android:indeterminate="false"
+        android:progress="0"></ProgressBar>-->
+	<TextView		
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:id="@+id/txtProductosServerMensaje" 
+	    android:textColor="@android:color/holo_red_light"/>
+	<ListView
+		android:minWidth="25px"
+		android:minHeight="25px"
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		android:id="@+id/lstProductosServer" />
+
+</LinearLayout>

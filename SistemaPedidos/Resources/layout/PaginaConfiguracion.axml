@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	android:orientation="vertical"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent">
+	<Button
+		android:text="Vaciar tabla Productos"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:minWidth="25px"
+		android:minHeight="25px"
+		android:id="@+id/btnVaciarProductos" />
+	<Button
+		android:text="vaciar tabla categoria productos"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:id="@+id/btnVaciarCategorias" />
+	<Button
+		android:text="Vaciar tabla clientes"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:id="@+id/btnVaciarClientes" />
+	<Button
+		android:text="vaciar tabla pedidos"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:id="@+id/btnVaciarPedidos" />
+	<Button
+		android:text="vaciar tabla detalle pedidos"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:id="@+id/btnVariarDetallePed" />
+	<Button
+		android:text="vaciar tabla listas de precio"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:id="@+id/btnVaciarListasPrecio" />
+
+</LinearLayout>

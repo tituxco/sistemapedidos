@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	android:orientation="vertical"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	android:minWidth="25px"
+	android:minHeight="25px">
+	<TextView
+		android:text="TAREAS LOCALES"
+		android:textAppearance="?android:attr/textAppearanceLarge"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:id="@+id/textView6" />
+	<Button
+		android:text="VER CLIENTES"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:id="@+id/btnPrincVerClientes" />
+	<Button
+		android:text="VER PRODUCTOS"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:id="@+id/btnPrincVerProductos" />
+	<Button
+		android:text="VER PEDIDOS"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:id="@+id/btnPrincVerPedidos" />
+	<TextView
+		android:text="TAREAS DE SINCRONIZACION"
+		android:textAppearance="?android:attr/textAppearanceLarge"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:id="@+id/textView1" />
+	<Button
+		android:text="Sincronizar clientes"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:id="@+id/btnPrincSincroClie" />
+	<TextView
+		android:text="Ultima sincronización:"
+		android:textAppearance="?android:attr/textAppearanceSmall"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:id="@+id/txtPrincFechaClientes"
+		android:textColor="@android:color/holo_red_light"/>
+	<Button
+		android:text="sincronizar pedidos"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:id="@+id/btnPrincSincroPed" />
+	<TextView
+		android:text="Ultima sincronización:"
+		android:textAppearance="?android:attr/textAppearanceSmall"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:id="@+id/txtPrincFechaPedidos"
+		android:textColor="@android:color/holo_red_light"/>
+	<Button
+		android:text="sincronizar productos"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:id="@+id/btnPrincSincProd" />
+	<TextView
+		android:text="Ultima sincronización:"
+		android:textAppearance="?android:attr/textAppearanceSmall"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:id="@+id/txtPrincFechaProductos"
+		android:textColor="@android:color/holo_red_light"/>
+	<Button
+		android:text="sincronizar listas de precio"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:id="@+id/btnPrincSincListasPrecio" />
+	<TextView
+		android:text="Ultima sincronización:"
+		android:textAppearance="?android:attr/textAppearanceSmall"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:id="@+id/txtPrincFechaListas"
+		android:textColor="@android:color/holo_red_light"/>
+	<Button
+		android:text="Manejo de tablas"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:id="@+id/btnPrincManejoTablas" />
+</LinearLayout >
