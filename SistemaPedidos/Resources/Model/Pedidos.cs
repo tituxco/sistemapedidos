@@ -81,7 +81,7 @@ namespace SistemaPedidos.Resources.Model
         public string observaciones { get; set; }
 
         [JsonProperty(PropertyName = "observaciones2")]
-        public int observaciones2 { get; set; }
+        public string observaciones2 { get; set; }
         
     }
     public class PedidosDetalleServer
@@ -108,7 +108,7 @@ namespace SistemaPedidos.Resources.Model
         public string ptotal { get; set; }
 
         [JsonProperty(PropertyName = "codint")]
-        public int id_master { get; set; }
+        public string id_master { get; set; }
     }
     public class RespuestaServerPedidos
     {

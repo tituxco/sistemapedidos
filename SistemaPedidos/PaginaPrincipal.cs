@@ -51,6 +51,7 @@ namespace SistemaPedidos
             var sincroPedidos = FindViewById<Button>(Resource.Id.btnPrincSincroPed);
             var sincroListas = FindViewById<Button>(Resource.Id.btnPrincSincListasPrecio);
             var manejoTablas = FindViewById<Button>(Resource.Id.btnPrincManejoTablas);
+            var actualizarApp = FindViewById<Button>(Resource.Id.btnPrincActualizarApp);
             sincroClientes.Click += delegate
             {
                 StartActivity(typeof(SincronizarClientes));
@@ -66,6 +67,13 @@ namespace SistemaPedidos
             manejoTablas.Click += delegate
             {
                 StartActivity(typeof(Configuracion));
+            };
+            actualizarApp.Click += delegate
+            {
+                Intent abrirWeb = new Intent(Intent.ActionView);
+                abrirWeb.SetData(Android.Net.Uri.Parse("http://66.97.35.86/sistemaPedidosAndroid"));
+
+                StartActivity(abrirWeb);
             };
 
             var verClientes = FindViewById<Button>(Resource.Id.btnPrincVerClientes);

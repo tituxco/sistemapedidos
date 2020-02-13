@@ -27,8 +27,8 @@ namespace SistemaPedidos
         List<ListasPrecioServer> ListasPrecio = new List<ListasPrecioServer>();
         List<string> ListasPrecioString = new List<string>();
 
-        IObtenerPromocionesDescuentos interfaz2;
-        List<PromocionesDescuentosServer> PromocionesDescuentos=new List<PromocionesDescuentosServer>();
+        //IObtenerPromocionesDescuentos interfaz2;
+        //List<PromocionesDescuentosServer> PromocionesDescuentos=new List<PromocionesDescuentosServer>();
 
 
         IListAdapter ListAdapter;
@@ -45,7 +45,7 @@ namespace SistemaPedidos
             };
 
             interfaz = RestService.For<IObtenerListaPrecio>("http://66.97.35.86");
-            interfaz2 = RestService.For<IObtenerPromocionesDescuentos>("http://66.97.35.86");
+            //interfaz2 = RestService.For<IObtenerPromocionesDescuentos>("http://66.97.35.86");
 
             SetContentView(Resource.Layout.ListasPrecioServer);
             var btnSincronizar = FindViewById<Button>(Resource.Id.btnListasServerSincronizar);
@@ -65,7 +65,7 @@ namespace SistemaPedidos
             btnSincronizar.Text = "Sincronizando, por favor espere...";
             btnSincronizar.Enabled = false;
             ObtenerListasPrecio();
-            ObtenerPromocionesDescuentos();
+            //ObtenerPromocionesDescuentos();
         }
         private async void ObtenerListasPrecio()
         {
@@ -85,10 +85,10 @@ namespace SistemaPedidos
                     {
                         ListasPrecio ListasPrecioLocal = new ListasPrecio()
                         {
-                            id=listasPrecio.id,
-                            nombre=listasPrecio.nombre,
-                            utilidad=listasPrecio.utilidad,
-                            auxcol = listasPrecio.auxcol 
+                            id = listasPrecio.id,
+                            nombre = listasPrecio.nombre,
+                            utilidad = listasPrecio.utilidad,
+                            auxcol = listasPrecio.auxcol
 
                         };
                         contadoradd++;
@@ -121,73 +121,74 @@ namespace SistemaPedidos
                 Toast.MakeText(this, ex.Message + "-" + ex.StackTrace, ToastLength.Long).Show();
             }
         }
-        private async void ObtenerPromocionesDescuentos()
-        {
-            try
-            {
-                RespuestaServerPromocionesDescuentos response = await interfaz2.GetServerPromocionesDescuentos();
-                PromocionesDescuentos = response.PromocionesDescuentos;
-                var databasepath = System.IO.Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal), "kigest_sltosAriel.db");
-                var mensaje = FindViewById<TextView>(Resource.Id.txtListasServerMensaje);
-                var db = new SQLiteConnection(databasepath);
-                int contadoradd = 0;
-                int contadormod = 0;
-                foreach (PromocionesDescuentosServer promocionesDescuentos in PromocionesDescuentos)
-                {
-                    IEnumerable<ConsultasTablas> resultado = BuscarPromocionesDescuentos (db, promocionesDescuentos.id);
-                    if (resultado.Count() == 0)
-                    {
-                        PromocionesDescuentos  promocionesDescuentosLocal = new PromocionesDescuentos ()
-                        {
-                            id = promocionesDescuentos.id,
-                            nombrepromo=promocionesDescuentos.nombrepromo,
-                            idproducto=promocionesDescuentos.idproducto,
-                            idcategoria=promocionesDescuentos.idcategoria,
-                            compra_min=promocionesDescuentos.compra_min,
-                        };
-                        contadoradd++;
-                        dbUser.InsertarPromocionesDescuentos(promocionesDescuentosLocal);
+        //    private async void ObtenerPromocionesDescuentos()
+        //    {
+        //        try
+        //        {
+        //            RespuestaServerPromocionesDescuentos response = await interfaz2.GetServerPromocionesDescuentos();
+        //            PromocionesDescuentos = response.PromocionesDescuentos;
+        //            var databasepath = System.IO.Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal), "kigest_sltosAriel.db");
+        //            var mensaje = FindViewById<TextView>(Resource.Id.txtListasServerMensaje);
+        //            var db = new SQLiteConnection(databasepath);
+        //            int contadoradd = 0;
+        //            int contadormod = 0;
+        //            foreach (PromocionesDescuentosServer promocionesDescuentos in PromocionesDescuentos)
+        //            {
+        //                IEnumerable<ConsultasTablas> resultado = BuscarPromocionesDescuentos (db, promocionesDescuentos.id);
+        //                if (resultado.Count() == 0)
+        //                {
+        //                    PromocionesDescuentos  promocionesDescuentosLocal = new PromocionesDescuentos ()
+        //                    {
+        //                        id = promocionesDescuentos.id,
+        //                        nombrepromo=promocionesDescuentos.nombrepromo,
+        //                        idproducto=promocionesDescuentos.idproducto,
+        //                        idcategoria=promocionesDescuentos.idcategoria,
+        //                        compra_min=promocionesDescuentos.compra_min,
+        //                    };
+        //                    contadoradd++;
+        //                    dbUser.InsertarPromocionesDescuentos(promocionesDescuentosLocal);
 
-                    }
-                    else
-                    {
-                        PromocionesDescuentos promocionesDescuentosLocal = new PromocionesDescuentos()
-                        {
-                            id = promocionesDescuentos.id,
-                            nombrepromo = promocionesDescuentos.nombrepromo,
-                            idproducto=promocionesDescuentos.idproducto,
-                            idcategoria=promocionesDescuentos.idcategoria,
-                            compra_min=promocionesDescuentos.compra_min,
-                            descuento_porc =promocionesDescuentos.descuento_porc
-                        };
-                        contadormod++;
-                        dbUser.ActualizarPromocionesDescuentos(promocionesDescuentosLocal);
-                    }
-                    //ListasPrecioString.Add(listasPrecio.ToString());
-                    mensaje.Text = "Sincrinizacion exitosa";
-                    var btnSincronizar = FindViewById<Button>(Resource.Id.btnListasServerSincronizar);
-                    btnSincronizar.Text = "Sincronizar listas";
-                    btnSincronizar.Enabled = true;
-                }
-                //ListAdapter = new ArrayAdapter<string>(this, Android.Resource.Layout.SimpleListItem1, ListasPrecioString);
-                //listaListasPrec.Adapter = ListAdapter;
-            }
-            catch (Exception ex)
-            {
-                Toast.MakeText(this, ex.Message + "-" + ex.StackTrace, ToastLength.Long).Show();
-            }
-        }
+        //                }
+        //                else
+        //                {
+        //                    PromocionesDescuentos promocionesDescuentosLocal = new PromocionesDescuentos()
+        //                    {
+        //                        id = promocionesDescuentos.id,
+        //                        nombrepromo = promocionesDescuentos.nombrepromo,
+        //                        idproducto=promocionesDescuentos.idproducto,
+        //                        idcategoria=promocionesDescuentos.idcategoria,
+        //                        compra_min=promocionesDescuentos.compra_min,
+        //                        descuento_porc =promocionesDescuentos.descuento_porc
+        //                    };
+        //                    contadormod++;
+        //                    dbUser.ActualizarPromocionesDescuentos(promocionesDescuentosLocal);
+        //                }
+        //                //ListasPrecioString.Add(listasPrecio.ToString());
+        //                mensaje.Text = "Sincrinizacion exitosa";
+        //                var btnSincronizar = FindViewById<Button>(Resource.Id.btnListasServerSincronizar);
+        //                btnSincronizar.Text = "Sincronizar listas";
+        //                btnSincronizar.Enabled = true;
+        //            }
+        //            //ListAdapter = new ArrayAdapter<string>(this, Android.Resource.Layout.SimpleListItem1, ListasPrecioString);
+        //            //listaListasPrec.Adapter = ListAdapter;
+        //        }
+        //        catch (Exception ex)
+        //        {
+        //            Toast.MakeText(this, ex.Message + "-" + ex.StackTrace, ToastLength.Long).Show();
+        //        }
+        //    }
         public static IEnumerable<ConsultasTablas> BuscarListasPrecio(SQLiteConnection db, int id)
         {
             {
                 return db.Query<ConsultasTablas>("SELECT * FROM ListasPrecio where id=?", id);
             }
         }
-        public static IEnumerable<ConsultasTablas> BuscarPromocionesDescuentos(SQLiteConnection db, int id)
-        {
-            {
-                return db.Query<ConsultasTablas>("SELECT * FROM PromocionesDescuentos where id=?", id);
-            }
-        }
+        //    public static IEnumerable<ConsultasTablas> BuscarPromocionesDescuentos(SQLiteConnection db, int id)
+        //    {
+        //        {
+        //            return db.Query<ConsultasTablas>("SELECT * FROM PromocionesDescuentos where id=?", id);
+        //        }
+        //    }
+        //}
     }
 }

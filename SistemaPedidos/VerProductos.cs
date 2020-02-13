@@ -31,6 +31,7 @@ namespace SistemaPedidos
         SearchView BusquedaProducto;
         FuncionesGlobales funcionesGlobales = new FuncionesGlobales();
         int IdPoductoSel;
+        string PrecioProdSel;
         public override bool OnCreateOptionsMenu(IMenu menu)
         {
             MenuInflater.Inflate(Resource.Menu.MenuProductos, menu);
@@ -76,18 +77,24 @@ namespace SistemaPedidos
             if (VariablesGlobales.PedidoEnCurso == true)
             {               
                 lstDatosProductos.ItemClick += (s, e) =>
-                {
+                {                                       
                     LayoutInflater layoutInflater = LayoutInflater.From(Application.Context);
+                    
                     View dialogo = layoutInflater.Inflate(Resource.Layout.inputBoxCantProd, null);
-
+                    
                     AlertDialog.Builder builder = new AlertDialog.Builder(this);
                     EditText cantProd = dialogo.FindViewById<EditText>(Resource.Id.txtInputCantProd);
+                    EditText PrecioProd = dialogo.FindViewById<EditText>(Resource.Id.txtInputPrecioProd);                   
+
                     TextView mensajeInput = dialogo.FindViewById<TextView>(Resource.Id.txtInputCantMensaje);
                     builder.SetView(dialogo);
                     AlertDialog alertDialog = builder.Create();
+
                     alertDialog.SetCanceledOnTouchOutside(true);
                     alertDialog.SetTitle("Agregar producto");
+                    
                     alertDialog.SetButton("Agregar", (ss, ee) =>
+
                     {
                         if(cantProd.Text=="" || cantProd.Text == "0")
                         {
@@ -97,17 +104,15 @@ namespace SistemaPedidos
                         {
                             //agregamos el producto
                             List<Productos> agregaProd = new List<Productos>();
-                            agregaProd = dbUser.VerListaProductosBusquedaID(IdPoductoSel);
+                            agregaProd = dbUser.VerListaProductosBusquedaID(IdPoductoSel);                            
+
                             string cant = cantProd.Text;
                             string pUnit = funcionesGlobales.CalcularPrecioLista(agregaProd[0].precio, agregaProd[0].ganancia, agregaProd[0].utilidad1 , 
-                                agregaProd[0].utilidad2 , agregaProd[0].iva, VariablesGlobales.ListaPrecioCliente);                            
-                            string porcDesc = funcionesGlobales.AplicarPromosDescuentos(agregaProd[0].codProdMain, cant);
-                            if (porcDesc != "1")
+                                agregaProd[0].utilidad2 , agregaProd[0].iva, VariablesGlobales.ListaPrecioCliente);                                                 
+                            if (PrecioProd.Text !="" & PrecioProd.Text  != "0")
                             {
-                                Toast.MakeText(this, "Porcentaje descuento: " + porcDesc, ToastLength.Short).Show();
-                            }                            
-                            pUnit = (Math.Round( double.Parse(pUnit) / double.Parse(porcDesc),2)).ToString() ;
-
+                                pUnit = PrecioProd.Text;
+                            }
                             string pTotal = (double.Parse(pUnit) * double.Parse(cantProd.Text)).ToString();
                             PedidosDetalle productoDetalle = new PedidosDetalle()
                             {
@@ -129,7 +134,14 @@ namespace SistemaPedidos
                     {
                         Toast.MakeText(this, "No se agrego el producto!", ToastLength.Short).Show();
                     });
+
                     IdPoductoSel = int.Parse(e.Id.ToString());
+                    List<Productos> selectPrecio = new List<Productos>();                    
+                    selectPrecio = dbUser.VerListaProductosBusquedaID(IdPoductoSel);
+                    PrecioProdSel = funcionesGlobales.CalcularPrecioLista(selectPrecio[0].precio, selectPrecio[0].ganancia, selectPrecio[0].utilidad1,
+                                selectPrecio[0].utilidad2, selectPrecio[0].iva, VariablesGlobales.ListaPrecioCliente);
+                    
+                    PrecioProd.Hint = "Precio: $" + PrecioProdSel;
                     alertDialog.Show();
                 };
             }            

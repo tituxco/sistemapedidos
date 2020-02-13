@@ -13,6 +13,9 @@ using SQLite;
 using SistemaPedidos.Resources.Model;
 using SistemaPedidos.Resources.DataHelper;
 using SistemaPedidos.Resources;
+using Android.Content.Res;
+using Xamarin;
+
 
 namespace SistemaPedidos
 {
@@ -32,11 +35,21 @@ namespace SistemaPedidos
             dbUser = new ConsultasTablas();
             BusquedaCliente = (SearchView)FindViewById(Resource.Id.srchClienteBuscar);
             var btnVolver = FindViewById<Button>(Resource.Id.btnClienteListaVolver);
+            var btnAgregar = FindViewById<Button>(Resource.Id.btnClienteAgregar);
+
             base.OnCreate(bundle);
             LoadData();
 
             BusquedaCliente.QueryTextSubmit += BusquedaCliente_QuerySubmit;
             BusquedaCliente.QueryTextChange += BusquedaCliente_TextChange;
+            btnAgregar.Click += delegate
+            {
+                Intent abrirWeb = new Intent(Intent.ActionView);
+                abrirWeb.SetData(Android.Net.Uri.Parse("http://66.97.35.86/pedidos_test"));
+
+                StartActivity(abrirWeb);
+            };
+
             btnVolver.Click += delegate
             {
                 StartActivity(typeof(PaginaPrincipal));
@@ -45,10 +58,9 @@ namespace SistemaPedidos
             {
                 DetalleCliente.IdCliente=int.Parse(e.Id.ToString());
                 StartActivity(typeof(DetalleCliente));
-            };
-            
-
+            };            
         }
+       
         void BusquedaCliente_QuerySubmit(object sender, SearchView.QueryTextSubmitEventArgs e)
         {
             if (e.Query == "")

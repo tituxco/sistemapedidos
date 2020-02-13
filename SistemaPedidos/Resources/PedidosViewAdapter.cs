@@ -47,7 +47,7 @@ namespace SistemaPedidos.Resources
 
             lstClientes = new List<TablaClientes>();
             lstClientes = dbUser.VerDetalleClienteMain(lstPedidos[position].id_cliente);
-            Descripcion.Text = lstPedidos[position].id + " - (" + lstPedidos[position].id_cliente + ") " +  lstClientes[0].nomapell_razon;
+            Descripcion.Text = VariablesGlobales.Idvendedor +" - "+ lstPedidos[position].id + " - (" + lstPedidos[position].id_cliente + ") " +  lstClientes[0].nomapell_razon;
             Descripcion.Tag = lstPedidos[position].id;          
             return view;
         }

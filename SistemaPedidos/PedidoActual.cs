@@ -120,40 +120,59 @@ namespace SistemaPedidos
 
                 AlertDialog.Builder constrModifica = new AlertDialog.Builder(this);
                 EditText cantProd = viewModificar.FindViewById<EditText>(Resource.Id.txtInputCantProd);
+                EditText PrecioProd = viewModificar.FindViewById<EditText>(Resource.Id.txtInputPrecioProd);
+
                 TextView mensajeInput = viewModificar.FindViewById<TextView>(Resource.Id.txtInputCantMensaje);
                 constrModifica.SetView(viewModificar);
+                
+                string cantidad = "";
+                string precioUnit = "";
+                double precioTotal = 0;
+                
                 AlertDialog alertModificar = constrModifica.Create();
                 alertModificar.SetCanceledOnTouchOutside(true);
                 alertModificar.SetTitle("Modificar producto");
+
+                
                 alertModificar.SetButton("Modificar cantidad", (ss, ee) =>
                 {
-                    if (cantProd.Text == "" || cantProd.Text == "0")
+
+                    List<PedidosDetalle> consProdPedido = new List<PedidosDetalle>();
+                    consProdPedido = dbUser.VerPedidoDetalleID(IdPoductoSel);
+                    //              
+                    if (cantProd.Text != "" & cantProd.Text != "0")
                     {
-                        Toast.MakeText(this, "No se puede modificar el producto!", ToastLength.Short).Show();
+                        cantidad = cantProd.Text;
                     }
                     else
                     {
-                        //agregamos el producto
-                        List<Productos> agregaProd = new List<Productos>();
-                        agregaProd = dbUser.VerListaProductosBusquedaID(IdPoductoSel);
-                        string pUnit = funcionesGlobales.CalcularPrecioLista(agregaProd[0].precio, agregaProd[0].ganancia, agregaProd[0].utilidad1 , 
-                            agregaProd[0].utilidad2 , agregaProd[0].iva, VariablesGlobales.ListaPrecioCliente);
-                        string pTotal = (double.Parse(pUnit) * int.Parse(cantProd.Text)).ToString();
-                        PedidosDetalle productoDetalle = new PedidosDetalle()
-                        {
-                            id = int.Parse( e.Id.ToString()),                            
-                            cantidad = cantProd.Text,
-                            punit = pUnit,
-                            ptotal = pTotal
-                        };
-
-                        dbUser.ModificarProductoPedido(productoDetalle);
-                        Toast.MakeText(this, "Producto modificado!", ToastLength.Short).Show();
-                        LoadDataPedido(IdPedido);
-                        LoadDataProductos(IdPedido);
-                       
+                        cantidad = consProdPedido[0].cantidad;
                     }
-                });
+
+                    if (PrecioProd.Text !="" & PrecioProd.Text != "0")
+                    {
+                        precioUnit = PrecioProd.Text;
+                    }
+                    else
+                    {
+                        precioUnit = consProdPedido[0].punit;
+                    }
+
+                    precioTotal = double.Parse(precioUnit) * double.Parse(cantidad) ;
+                                               
+                    PedidosDetalle productoDetalle = new PedidosDetalle()
+                    {                           
+                        id =IdPoductoSel ,                            
+                        cantidad = cantidad,
+                        punit = precioUnit,
+                        ptotal = precioTotal.ToString() 
+                    };
+
+                    dbUser.ModificarProductoPedido(productoDetalle);
+                    Toast.MakeText(this, "Producto modificado!", ToastLength.Short).Show();
+                    LoadDataPedido(IdPedido);
+                    LoadDataProductos(IdPedido);                                      
+                });                
                 alertModificar.SetButton2("Eliminar producto", (sss, eee) =>
                 {
                     PedidosDetalle productoDetalle = new PedidosDetalle()
@@ -171,6 +190,16 @@ namespace SistemaPedidos
                     LoadDataProductos(IdPedido);                    
                 });
                 IdPoductoSel = int.Parse(e.Id.ToString());
+                
+                List<PedidosDetalle> consProdPedido = new List<PedidosDetalle>();
+                consProdPedido = dbUser.VerPedidoDetalleID (IdPoductoSel);
+
+                PrecioProd.Hint = "Precio: $" + consProdPedido[0].punit;
+                precioUnit = consProdPedido[0].punit;
+                
+                cantProd.Hint = consProdPedido[0].cantidad;
+                cantidad = consProdPedido[0].cantidad;
+
                 alertModificar.Show();
             };
           
@@ -266,12 +295,12 @@ namespace SistemaPedidos
                 fecha = masterPed[0].fecha,
                 id_cliente = masterPed[0].id_cliente,
                 iva105 = "0",
-                iva21 = masterPed[0].iva21.ToString().Replace(".",","),
-                subtotal = masterPed[0].subtotal.ToString().Replace(".", ","),
-                total = masterPed[0].total.ToString().Replace(".", ","),
+                iva21 = masterPed[0].iva21,
+                subtotal = masterPed[0].subtotal,
+                total = masterPed[0].total,
                 vendedor = masterPed[0].vendedor,
                 observaciones = masterPed[0].observaciones,
-                observaciones2 = masterPed[0].id
+                observaciones2 = IdVendedor + "-" + masterPed[0].id
             };
             await interfazPedidoMaster.SubirPedidoMaster(pedidosMasterServer);
 
@@ -282,11 +311,11 @@ namespace SistemaPedidos
                     cantidad = detallePed[i].cantidad,
                     codProdMain=detallePed[i].codProdMain,
                     descripcion=detallePed[i].descripcion,
-                    id_master=detallePed[i].id_master,
-                    iva=detallePed[i].iva.ToString().Replace(".", ","),
+                    id_master=IdVendedor + "-" + detallePed[i].id_master,
+                    iva=detallePed[i].iva,
                     plu=detallePed[i].plu,
-                    ptotal=detallePed[i].ptotal.ToString().Replace(".", ","),
-                    punit=detallePed[i].punit.ToString().Replace(".", ",")
+                    ptotal=detallePed[i].ptotal,
+                    punit=detallePed[i].punit
                 };
                 await interfazPedidoDetalle.SubirPedidoDetalle(pedidosDetalleServer);                
             }

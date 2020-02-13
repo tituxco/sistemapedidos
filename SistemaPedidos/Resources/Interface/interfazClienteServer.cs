@@ -15,7 +15,6 @@ using SistemaPedidos.Resources.Model;
 
 namespace SistemaPedidos.Resources.Interface
 {
-
     [Headers("User-Agent: :request:")]
 
     interface IObtenerEstadoVendedor

@@ -801,6 +801,22 @@ namespace SistemaPedidos.Resources.DataHelper
                 return false;
             }
         }
+        public List<PedidosDetalle > VerPedidoDetalleID(int idproductoDetalle)
+        {
+            try
+            {
+                using (var connection = new SQLiteConnection(System.IO.Path.Combine(folder, "kigest_sltosAriel.db")))
+                {
+                    return connection.Query<PedidosDetalle >("Select * from PedidosDetalle where id=?", idproductoDetalle).ToList();
+                }
+            }
+            catch (SQLiteException ex)
+            {
+                Toast.MakeText(Application.Context, "SQLiteEx: " + ex.Message, ToastLength.Short).Show();
+                return null;
+            }
+        }
+
         public bool VaciarTablaDetallePedidos()
         {
             try

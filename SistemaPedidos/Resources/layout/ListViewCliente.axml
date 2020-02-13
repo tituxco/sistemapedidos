@@ -17,6 +17,11 @@
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		android:id="@+id/btnClienteListaVolver" />
+    <Button
+        android:text="Agregar (online desde navegador)"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/btnClienteAgregar" />
 	<ListView
 		android:minWidth="25px"
 		android:minHeight="25px"
