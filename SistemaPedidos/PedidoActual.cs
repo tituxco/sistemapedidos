@@ -20,6 +20,7 @@ using SistemaPedidos.Resources.DataHelper;
 using SistemaPedidos.Resources.Interface;
 using SistemaPedidos.Resources.Model;
 
+
 namespace SistemaPedidos
 {
     [Activity(Label = "PedidoActual")]
@@ -48,7 +49,7 @@ namespace SistemaPedidos
         int IdCliente = VariablesGlobales.IdCliente;
         int IdVendedor = VariablesGlobales.Idvendedor;
         int IdListaPrecio = VariablesGlobales.ListaPrecioCliente;
-
+        int PedidoFinalizado = 0;
         double subtotal = 0;
         double iva = 0;
         double TotalFinal = 0;
@@ -67,6 +68,7 @@ namespace SistemaPedidos
             var btnFinalizarPedido = FindViewById<Button>(Resource.Id.btnPedidoActFinalizar);
             var btnEnviarPedido = FindViewById<Button>(Resource.Id.btnEnviarPedido);
             var btnVolver = FindViewById<Button>(Resource.Id.btnPedidoVolver);
+            var btnEliminarPedido = FindViewById<Button>(Resource.Id.btnEliminarPedido);
 
             if (IdPedido != 0 && VariablesGlobales.PedidoEnCurso == false)
             {
@@ -77,23 +79,35 @@ namespace SistemaPedidos
                 datosCliente = dbUser.VerDetalleClienteMain(IdCliente);
                 IdVendedor = datosCliente[0].vendedor;
                 IdListaPrecio = datosCliente[0].lista_precios;
+                PedidoFinalizado = pedidosMaster[0].finalizado;
 
-                
                 VariablesGlobales.Idvendedor = IdVendedor;
                 VariablesGlobales.ListaPrecioCliente = IdListaPrecio;
                 VariablesGlobales.IdCliente = IdCliente;
             }
             else
             {
+
                 pedidosMaster = dbUser.VerPedidoMaster(IdPedido);
                 datosCliente = dbUser.VerDetalleClienteMain(pedidosMaster[0].id_cliente);
+
+                IdCliente = pedidosMaster[0].id_cliente;
+                IdVendedor = datosCliente[0].vendedor;
+                IdListaPrecio = datosCliente[0].lista_precios;
+                PedidoFinalizado = pedidosMaster[0].finalizado;
+
+                VariablesGlobales.Idvendedor = IdVendedor;
+                VariablesGlobales.ListaPrecioCliente = IdListaPrecio;
+                VariablesGlobales.IdCliente = IdCliente;
+
             }
 
             if (pedidosMaster[0].finalizado == 1 && pedidosMaster[0].enviado == 0)
             {
                 VariablesGlobales.PedidoEnCurso = false;
                 btnAddProducto.Enabled = false;
-                btnFinalizarPedido.Enabled = false;
+                btnFinalizarPedido.Enabled = true;
+                btnFinalizarPedido.Text = "Modificar pedido";
                 btnEnviarPedido.Enabled = true;
             }
             else if (pedidosMaster[0].finalizado == 0 && pedidosMaster[0].enviado == 0)
@@ -134,7 +148,7 @@ namespace SistemaPedidos
                 alertModificar.SetTitle("Modificar producto");
 
                 
-                alertModificar.SetButton("Modificar cantidad", (ss, ee) =>
+                alertModificar.SetButton("Modificar", (ss, ee) =>
                 {
 
                     List<PedidosDetalle> consProdPedido = new List<PedidosDetalle>();
@@ -172,7 +186,8 @@ namespace SistemaPedidos
                     Toast.MakeText(this, "Producto modificado!", ToastLength.Short).Show();
                     LoadDataPedido(IdPedido);
                     LoadDataProductos(IdPedido);                                      
-                });                
+                });  
+                
                 alertModificar.SetButton2("Eliminar producto", (sss, eee) =>
                 {
                     PedidosDetalle productoDetalle = new PedidosDetalle()
@@ -197,10 +212,12 @@ namespace SistemaPedidos
                 PrecioProd.Hint = "Precio: $" + consProdPedido[0].punit;
                 precioUnit = consProdPedido[0].punit;
                 
-                cantProd.Hint = consProdPedido[0].cantidad;
+                cantProd.Hint = "Cantidad:" + consProdPedido[0].cantidad;
                 cantidad = consProdPedido[0].cantidad;
-
-                alertModificar.Show();
+                if (PedidoFinalizado == 0)
+                {
+                    alertModificar.Show();
+                }
             };
           
             Toast.MakeText(this, "Pedido cliente:" + VariablesGlobales.IdCliente+" | Pedido N°:" + VariablesGlobales.IdPedidoenCurso + " | Lista de precios:" +
@@ -212,58 +229,100 @@ namespace SistemaPedidos
             {
                 StartActivity(typeof(VerProductos));
             };
+
             btnFinalizarPedido.Click += delegate
             {
-                LayoutInflater layoutInflater = LayoutInflater.From(Application.Context);
-                View dialogo = layoutInflater.Inflate(Resource.Layout.inputBoxFinalizarPedido, null);
-
-                AlertDialog.Builder constrFinaliza = new AlertDialog.Builder(this);
-                TextView txtsubtotal = dialogo.FindViewById<TextView>(Resource.Id.txtFinalizarPedSubtotal);
-                TextView txtiva = dialogo.FindViewById<TextView>(Resource.Id.txtFinalizarPedIVA);
-                TextView txtptotal = dialogo.FindViewById<TextView>(Resource.Id.txtFinalizarPedPtotal);
-                EditText txtObservaciones = dialogo.FindViewById<EditText>(Resource.Id.txtFinalizarPedObservaciones);
-
-                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-                string fecha = simpleDateFormat.Format(new Date());
-
-                constrFinaliza.SetView(dialogo);
-                AlertDialog alertFinalizar = constrFinaliza.Create();
-                alertFinalizar.SetCanceledOnTouchOutside(true);
-                alertFinalizar.SetTitle("Finalizar pedido");
-                alertFinalizar.SetButton("Finalizar", (ss, ee) =>
+                
+                if (btnFinalizarPedido.Text == "Modificar pedido")
                 {
+                    List<PedidosMaster> datosPedido = new List<PedidosMaster>();
+
+                    datosPedido  = dbUser.VerPedidoMaster(IdPedido);
+
+                    string fecha = datosPedido[0].fecha.ToString();
+                    string subtotal = datosPedido[0].subtotal.ToString();
+                    string iva21 = datosPedido[0].iva21.ToString();
+                    string total = datosPedido[0].total.ToString();
+                    string vendedor = datosPedido[0].vendedor.ToString();
+                    string observaciones = datosPedido[0].observaciones.ToString();
+
                     PedidosMaster pedidosMaster = new PedidosMaster()
                     {
                         id = IdPedido,
                         id_cliente = IdCliente,
                         fecha = fecha,
-                        finalizado = 1,
+                        finalizado = 0,
                         subtotal = subtotal.ToString(),
                         iva105 = "0",
                         iva21 = iva.ToString(),
                         total = TotalFinal.ToString(),
                         vendedor = IdVendedor.ToString(),
-                        observaciones = txtObservaciones.Text
+                        observaciones = observaciones 
                     };
                     if (dbUser.ActualizaPedido(pedidosMaster))
                     {
-                        Toast.MakeText(this, "Pedido finalizado!", ToastLength.Short).Show();
-                        StartActivity(typeof(VerPedidos));
-                        VariablesGlobales.IdCliente = 0;
-                        VariablesGlobales.IdPedidoenCurso = 0;
-                        VariablesGlobales.ListaPrecioCliente = 0;
+                        btnFinalizarPedido.Text = "Finalizar pedido";
+                        btnAddProducto.Enabled = true;
+                        btnEnviarPedido.Enabled = false;
+                        VariablesGlobales.PedidoEnCurso = true;
+                        PedidoFinalizado = 0;
+                        //LoadDataPedido(IdPedido);
                     }
-                });
-                alertFinalizar.SetButton2("Cancelar", (ss, ee) =>
+                }
+                else
                 {
-                    Toast.MakeText(this, "Finalizacion cancelada!", ToastLength.Short).Show();
-                });
+                    LayoutInflater layoutInflater = LayoutInflater.From(Application.Context);
+                    View dialogo = layoutInflater.Inflate(Resource.Layout.inputBoxFinalizarPedido, null);
+                    TextView txtsubtotal = dialogo.FindViewById<TextView>(Resource.Id.txtFinalizarPedSubtotal);
+                    TextView txtiva = dialogo.FindViewById<TextView>(Resource.Id.txtFinalizarPedIVA);
+                    TextView txtptotal = dialogo.FindViewById<TextView>(Resource.Id.txtFinalizarPedPtotal);
+                    EditText txtObservaciones = dialogo.FindViewById<EditText>(Resource.Id.txtFinalizarPedObservaciones);
 
-                txtsubtotal.Text = "Subtotal: " + subtotal.ToString();// Math.Round(subtotal,2).ToString();
-                txtiva.Text = "IVA: " + iva.ToString(); //Math.Round(iva,2).ToString();
-                txtptotal.Text = "Total pedido: " + TotalFinal.ToString();// Math.Round(TotalFinal,2).ToString();
-                alertFinalizar.Show();          
+                    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+                    string fecha = simpleDateFormat.Format(new Date());
+
+                    AlertDialog.Builder constrFinaliza = new AlertDialog.Builder(this);
+                    
+                    constrFinaliza.SetView(dialogo);
+                    AlertDialog alertFinalizar = constrFinaliza.Create();
+                    alertFinalizar.SetCanceledOnTouchOutside(true);
+                    alertFinalizar.SetTitle("Finalizar pedido");
+                    alertFinalizar.SetButton("Finalizar", (ss, ee) =>
+                    {
+                        PedidosMaster pedidosMaster = new PedidosMaster()
+                        {
+                            id = IdPedido,
+                            id_cliente = IdCliente,
+                            fecha = fecha,
+                            finalizado = 1,
+                            subtotal = subtotal.ToString(),
+                            iva105 = "0",
+                            iva21 = iva.ToString(),
+                            total = TotalFinal.ToString(),
+                            vendedor = IdVendedor.ToString(),
+                            observaciones = txtObservaciones.Text
+                        };
+                        if (dbUser.ActualizaPedido(pedidosMaster))
+                        {
+                            Toast.MakeText(this, "Pedido finalizado!", ToastLength.Short).Show();
+                            StartActivity(typeof(VerPedidos));
+                            VariablesGlobales.IdCliente = 0;
+                            VariablesGlobales.IdPedidoenCurso = 0;
+                            VariablesGlobales.ListaPrecioCliente = 0;
+                        }
+                    });
+                    alertFinalizar.SetButton2("Cancelar", (ss, ee) =>
+                    {
+                        Toast.MakeText(this, "Finalizacion cancelada!", ToastLength.Short).Show();
+                    });
+
+                    txtsubtotal.Text = "Subtotal: " + subtotal.ToString();// Math.Round(subtotal,2).ToString();
+                    txtiva.Text = "IVA: " + iva.ToString(); //Math.Round(iva,2).ToString();
+                    txtptotal.Text = "Total pedido: " + TotalFinal.ToString();// Math.Round(TotalFinal,2).ToString();
+                    alertFinalizar.Show();
+                }
             };
+
             btnVolver.Click += delegate
             {
                 StartActivity(typeof(VerPedidos));
@@ -273,6 +332,45 @@ namespace SistemaPedidos
             {
                 SubirPedido();
             };
+
+            btnEliminarPedido.Click += delegate
+             {
+                 AlertDialog.Builder alertEliminar = new AlertDialog.Builder(this);
+
+                 alertEliminar.SetTitle("Eliminar pedido");
+                 alertEliminar.SetMessage("Esta seguro que desea eliminar este pedido?");
+                 alertEliminar.SetPositiveButton("Si", OkActionEliminar);                 
+                 alertEliminar.SetNegativeButton("No", CancelActionEliminar);
+
+                 var myCustomDialog = alertEliminar.Create();
+
+                 myCustomDialog.Show();
+
+
+        };
+        }
+        private void OkActionEliminar(object sender, DialogClickEventArgs e)
+        {
+            PedidosMaster pedidoMaster = new PedidosMaster()
+            {
+                id=IdPedido
+            };
+            PedidosDetalle pedidoDetalle = new PedidosDetalle()
+            {
+                id_master=IdPedido
+            };
+            if (dbUser.EliminarPedido(pedidoMaster, pedidoDetalle)) { 
+            Toast.MakeText(this, "Eliminado!", ToastLength.Short).Show();
+                StartActivity(typeof(VerPedidos));
+            }
+            else
+            {
+                Toast.MakeText(this, "Hubo un error al eliminar!", ToastLength.Short).Show();
+            }
+        }
+        private void CancelActionEliminar(object sender, DialogClickEventArgs e)
+        {
+            Toast.MakeText(this, "No se elimino!", ToastLength.Short).Show();
         }
         private async void SubirPedido()
         {
@@ -338,7 +436,6 @@ namespace SistemaPedidos
             Toast.MakeText(this, "Pedido enviado correctamente!", ToastLength.Short).Show();
             StartActivity(typeof(VerPedidos));
         }
-
         public void LoadDataProductos(int idPedido)
         {
             lstOrigenProductos = dbUser.verDetallePedido(idPedido);
