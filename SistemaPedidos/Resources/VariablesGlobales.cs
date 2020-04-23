@@ -20,5 +20,6 @@ namespace SistemaPedidos
         public static bool PedidoEnCurso=false;
         public static int ListaPrecioCliente=0;
         public static int IdPedidoenCurso=0;
+        public static double CotizacionDolar = 0;
     }
 }

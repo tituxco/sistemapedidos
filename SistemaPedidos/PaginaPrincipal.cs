@@ -9,17 +9,20 @@ using Android.OS;
 using Android.Runtime;
 using Android.Views;
 using Android.Widget;
+using SistemaPedidos.Resources.DataHelper;
+using SistemaPedidos.Resources.Model;
 
 namespace SistemaPedidos
 {
     [Activity(Label = "Sistema de pedidos - Bienvenido")]
     public class PaginaPrincipal : Activity
     {
+        ConsultasTablas dbUser;
+        List<CotizacionMoneda> moneda = new List<CotizacionMoneda>();
         public override bool OnCreateOptionsMenu(IMenu menu)
         {
             MenuInflater.Inflate(Resource.Menu.MenuPrincipal, menu);
-            return base.OnCreateOptionsMenu(menu);
-            
+            return base.OnCreateOptionsMenu(menu);            
         }
         public override bool OnOptionsItemSelected(IMenuItem item)
         {
@@ -45,7 +48,34 @@ namespace SistemaPedidos
         {
             base.OnCreate(savedInstanceState);
             SetContentView(Resource.Layout.PaginaPrincipal);
+            dbUser = new ConsultasTablas();
+            moneda = dbUser.VerDetalleMoneda(2);
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
+
+            if (moneda.Count == 0)
+            {
+                CotizacionMoneda monedaPeso = new CotizacionMoneda
+                {
+                    id = 1,
+                    nombre = "PESO",
+                    cotizacion = "1"
+                };
+                CotizacionMoneda monedaDolar = new CotizacionMoneda
+                {
+                    id = 2,
+                    nombre = "DOLAR",
+                    cotizacion = "1"
+                };
+                dbUser.InstertarNuevaMoneda(monedaPeso);
+                dbUser.InstertarNuevaMoneda(monedaDolar);
+                VariablesGlobales.CotizacionDolar = 1;
+            }
+            else
+            {
+                VariablesGlobales.CotizacionDolar = double.Parse(moneda[0].cotizacion);
+            }
+           
             var sincroClientes = FindViewById<Button>(Resource.Id.btnPrincSincroClie);
             var sincroProductos = FindViewById<Button>(Resource.Id.btnPrincSincProd);
             var sincroPedidos = FindViewById<Button>(Resource.Id.btnPrincSincroPed);
@@ -92,6 +122,8 @@ namespace SistemaPedidos
             {
                 StartActivity(typeof(VerPedidos));
             };
+
+           
         }
     }
 }

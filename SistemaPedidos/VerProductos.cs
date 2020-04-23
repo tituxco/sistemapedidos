@@ -108,7 +108,7 @@ namespace SistemaPedidos
 
                             string cant = cantProd.Text;
                             string pUnit = funcionesGlobales.CalcularPrecioLista(agregaProd[0].precio, agregaProd[0].ganancia, agregaProd[0].utilidad1 , 
-                                agregaProd[0].utilidad2 , agregaProd[0].iva, VariablesGlobales.ListaPrecioCliente);                                                 
+                                agregaProd[0].utilidad2 , agregaProd[0].iva, VariablesGlobales.ListaPrecioCliente, agregaProd[0].calcular_precio );                                                 
                             if (PrecioProd.Text !="" & PrecioProd.Text  != "0")
                             {
                                 pUnit = PrecioProd.Text;
@@ -139,7 +139,7 @@ namespace SistemaPedidos
                     List<Productos> selectPrecio = new List<Productos>();                    
                     selectPrecio = dbUser.VerListaProductosBusquedaID(IdPoductoSel);
                     PrecioProdSel = funcionesGlobales.CalcularPrecioLista(selectPrecio[0].precio, selectPrecio[0].ganancia, selectPrecio[0].utilidad1,
-                                selectPrecio[0].utilidad2, selectPrecio[0].iva, VariablesGlobales.ListaPrecioCliente);
+                                selectPrecio[0].utilidad2, selectPrecio[0].iva, VariablesGlobales.ListaPrecioCliente, selectPrecio[0].calcular_precio );
                     
                     PrecioProd.Hint = "Precio: $" + PrecioProdSel;
                     alertDialog.Show();

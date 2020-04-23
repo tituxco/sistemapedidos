@@ -26,6 +26,7 @@ namespace SistemaPedidos
     [Activity(Label = "PedidoActual")]
     public class PedidoActual : Activity
     {
+
         ISubirPedidoMaster interfazPedidoMaster;
         ISubirPedidoDetalle interfazPedidoDetalle;
 
@@ -53,22 +54,26 @@ namespace SistemaPedidos
         double subtotal = 0;
         double iva = 0;
         double TotalFinal = 0;
-        
+
+        public override bool OnCreateOptionsMenu(IMenu menu)
+        {
+            MenuInflater.Inflate(Resource.Menu.MenuPedidos, menu);
+            return base.OnCreateOptionsMenu(menu);
+
+        }
+
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
             SetContentView(Resource.Layout.PedidoActual);
             dbUser = new ConsultasTablas();
-           
 
             lstDatosProductos = FindViewById<ListView>(Resource.Id.lstPedidoActProductos);
 
             var pedCliente = FindViewById<TextView>(Resource.Id.txtPedidoCliente);
             var btnAddProducto = FindViewById<Button>(Resource.Id.btnPedidoActAgregar);
             var btnFinalizarPedido = FindViewById<Button>(Resource.Id.btnPedidoActFinalizar);
-            var btnEnviarPedido = FindViewById<Button>(Resource.Id.btnEnviarPedido);
-            var btnVolver = FindViewById<Button>(Resource.Id.btnPedidoVolver);
-            var btnEliminarPedido = FindViewById<Button>(Resource.Id.btnEliminarPedido);
+            var btnAddProductoNvo = FindViewById<Button>(Resource.Id.btnPedidoActAddProd);
 
             if (IdPedido != 0 && VariablesGlobales.PedidoEnCurso == false)
             {
@@ -108,23 +113,21 @@ namespace SistemaPedidos
                 btnAddProducto.Enabled = false;
                 btnFinalizarPedido.Enabled = true;
                 btnFinalizarPedido.Text = "Modificar pedido";
-                btnEnviarPedido.Enabled = true;
             }
             else if (pedidosMaster[0].finalizado == 0 && pedidosMaster[0].enviado == 0)
             {
                 VariablesGlobales.PedidoEnCurso = true;
-                btnEnviarPedido.Enabled = false;
+                //btnEnviarPedido.Enabled = false;
                 btnAddProducto.Enabled = true;
                 btnFinalizarPedido.Enabled = true;
             }
             else if (pedidosMaster[0].finalizado == 1 && pedidosMaster[0].enviado == 1)
             {
                 VariablesGlobales.PedidoEnCurso = false;
-                btnEnviarPedido.Enabled = false;
+                //btnEnviarPedido.Enabled = false;
                 btnAddProducto.Enabled = false;
                 btnFinalizarPedido.Enabled = false;
             }
-
             LoadDataPedido(IdPedido);
             LoadDataProductos(IdPedido);
             lstDatosProductos.ItemClick += (s, e) =>
@@ -263,7 +266,7 @@ namespace SistemaPedidos
                     {
                         btnFinalizarPedido.Text = "Finalizar pedido";
                         btnAddProducto.Enabled = true;
-                        btnEnviarPedido.Enabled = false;
+                        //btnEnviarPedido.Enabled = false;
                         VariablesGlobales.PedidoEnCurso = true;
                         PedidoFinalizado = 0;
                         //LoadDataPedido(IdPedido);
@@ -323,32 +326,94 @@ namespace SistemaPedidos
                 }
             };
 
-            btnVolver.Click += delegate
-            {
-                StartActivity(typeof(VerPedidos));
-            };
-            
-            btnEnviarPedido.Click += delegate
-            {
-                SubirPedido();
-            };
-
-            btnEliminarPedido.Click += delegate
+            btnAddProductoNvo.Click += delegate
              {
-                 AlertDialog.Builder alertEliminar = new AlertDialog.Builder(this);
+                 LayoutInflater layoutInflater = LayoutInflater.From(Application.Context);
 
-                 alertEliminar.SetTitle("Eliminar pedido");
-                 alertEliminar.SetMessage("Esta seguro que desea eliminar este pedido?");
-                 alertEliminar.SetPositiveButton("Si", OkActionEliminar);                 
-                 alertEliminar.SetNegativeButton("No", CancelActionEliminar);
+                 View dialogo = layoutInflater.Inflate(Resource.Layout.inputBoxNvoProd, null);
 
-                 var myCustomDialog = alertEliminar.Create();
+                 AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
-                 myCustomDialog.Show();
+                 EditText cantProd = dialogo.FindViewById<EditText>(Resource.Id.txtNvoProdCantidad);
+                 EditText PrecioProd = dialogo.FindViewById<EditText>(Resource.Id.txtNvoProdPrecio);
+                 EditText DescripcionProd = dialogo.FindViewById<EditText>(Resource.Id.txtNvoProdDescripcion);
+                 EditText ivaProd = dialogo.FindViewById<EditText>(Resource.Id.txtNvoProdIVA);
+           
+                 builder.SetView(dialogo);
+                 AlertDialog alertDialog = builder.Create();
 
+                 alertDialog.SetCanceledOnTouchOutside(true);
+                 alertDialog.SetTitle("Agregar producto fuera de lista");
+                 alertDialog.SetButton("Agregar", (ss, ee) =>
+                 {
+                     if (cantProd.Text == "" || cantProd.Text == "0")
+                     {
+                         Toast.MakeText(this, "La cantidad debe ser mayor que Cero!", ToastLength.Short).Show();
+                     }
+                     else
+                     {
+                         
+                         string cant = cantProd.Text;
+                         string pUnit = "0";
+                         if (PrecioProd.Text != "" & PrecioProd.Text != "0")
+                         {
+                             pUnit = PrecioProd.Text;
+                         }
+                         string pTotal = (double.Parse(pUnit) * double.Parse(cantProd.Text)).ToString();
+                         PedidosDetalle productoDetalle = new PedidosDetalle()
+                         {
+                             id_master = VariablesGlobales.IdPedidoenCurso,
+                             cod = "0",
+                             plu = "0",
+                             codProdMain = 0,
+                             descripcion = DescripcionProd.Text,
+                             iva = "21,00",
+                             cantidad = cantProd.Text,
+                             punit = pUnit,
+                             ptotal = pTotal
+                         };
+                         dbUser.InsertarProductoPedido(productoDetalle);
+                         Toast.MakeText(this, "Producto agregado!", ToastLength.Short).Show();
+                         LoadDataProductos(VariablesGlobales.IdPedidoenCurso);
+                     }
+                 });
+                 alertDialog.SetButton2("Cancelar", (sss, eee) =>
+                 {
+                     Toast.MakeText(this, "No se agrego el producto!", ToastLength.Short).Show();
+                 });
+                 alertDialog.Show();
+             };
 
-        };
+                      
+       
         }
+
+        public override bool OnOptionsItemSelected(IMenuItem item)
+        {
+            switch (item.ItemId)
+            {
+                //acciones de los botones de menu
+                case Resource.Id.btnMnuPedEliminar:
+                    AlertDialog.Builder alertEliminar = new AlertDialog.Builder(this);
+
+                    alertEliminar.SetTitle("Eliminar pedido");
+                    alertEliminar.SetMessage("Esta seguro que desea eliminar este pedido?");
+                    alertEliminar.SetPositiveButton("Si", OkActionEliminar);
+                    alertEliminar.SetNegativeButton("No", CancelActionEliminar);
+
+                    var myCustomDialog = alertEliminar.Create();
+              
+                    return true;
+                case Resource.Id.btnMnuPedEnviar:
+                    SubirPedido();
+                    return true;
+                case Resource.Id.btnMnuPedLista:
+                    StartActivity(typeof(VerPedidos));
+                    return true;
+            }
+            return base.OnOptionsItemSelected(item);
+        }
+
         private void OkActionEliminar(object sender, DialogClickEventArgs e)
         {
             PedidosMaster pedidoMaster = new PedidosMaster()

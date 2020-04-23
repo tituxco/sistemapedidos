@@ -128,6 +128,7 @@ namespace SistemaPedidos
                             //bonif = producto.bonif,
                             utilidad1 = producto.utilidad1,
                             utilidad2 = producto.utilidad2,
+                            calcular_precio=producto.calcular_precio
                         };
                         contadormod++;
                         contadortot++;

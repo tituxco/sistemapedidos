@@ -10,6 +10,8 @@ using Android.Runtime;
 using Android.Views;
 using Android.Widget;
 using SistemaPedidos.Resources.DataHelper;
+using SistemaPedidos.Resources.Model;
+using SQLite;
 
 namespace SistemaPedidos
 {
@@ -29,55 +31,137 @@ namespace SistemaPedidos
             var btnVaciarClientes = FindViewById<Button>(Resource.Id.btnVaciarClientes);
             var btnVaciarPedidos = FindViewById<Button>(Resource.Id.btnVaciarPedidos);
             var btnVaciarPedidosDetalle = FindViewById<Button>(Resource.Id.btnVariarDetallePed);
+            var btnGuardarCotizacionMoneda= FindViewById<Button>(Resource.Id.btnCotizacionDolar);
+            var btnVolver = FindViewById<Button>(Resource.Id.btnConfVolverInicio);
+            var txtCotizacion= FindViewById<EditText>(Resource.Id.txtCotizacionDolar);
+
+            txtCotizacion.Text = VariablesGlobales.CotizacionDolar.ToString();
 
             btnVaciarCategoriasProductos.Click += delegate
             {
-                if (db.VaciarTablaCategoriasProd())
+                AlertDialog.Builder alert = new AlertDialog.Builder(this);
+                alert.SetTitle("Specify Action");
+                alert.SetMessage("Esta seguro que desea vaciar la tabla categoria?");
+                alert.SetPositiveButton("Aceptar", (senderAlert, args) =>
                 {
-                    Toast.MakeText(this, "Se vacio la tabla de categorias", ToastLength.Long).Show();
-                }
+                    if (db.VaciarTablaCategoriasProd())
+                    {
+                        Toast.MakeText(this, "Se vacio la tabla de categorias", ToastLength.Long).Show();
+                    }
+                });
+                alert.SetNegativeButton("Cancelar", (senderAlert, args) =>
+                {
+                    Toast.MakeText(this, "Proceso cancelado", ToastLength.Long).Show();
+                });
+                Dialog dialog = alert.Create();
+                dialog.Show();
             };
 
             btnVaciarProductos.Click += delegate
             {
-                if (db.VaciarTablaProductos())
+                AlertDialog.Builder alert = new AlertDialog.Builder(this);
+                alert.SetTitle("Specify Action");
+                alert.SetMessage("Esta seguro que desea vaciar la tabla de productos?");
+                alert.SetPositiveButton("Aceptar", (senderAlert, args) =>
                 {
-                    Toast.MakeText(this, "Se vacio la tabla de Productos", ToastLength.Long).Show();
+                    if (db.VaciarTablaProductos())
+                {
+                    Toast.MakeText(this, "Se vacio la tabla de PRODUCTOS", ToastLength.Long).Show();
                 }
+                });
+                    alert.SetNegativeButton("Cancelar", (senderAlert, args) =>
+                {
+                    Toast.MakeText(this, "Proceso cancelado", ToastLength.Long).Show();
+                });
+                Dialog dialog = alert.Create();
+                dialog.Show();
             };
 
             btnVaciarListasPrecio.Click += delegate
             {
-                if (db.VaciarTablaListasPrecio())
+                AlertDialog.Builder alert = new AlertDialog.Builder(this);
+                alert.SetTitle("Specify Action");
+                alert.SetMessage("Esta seguro que desea vaciar la tabla de productos?");
+                alert.SetPositiveButton("Aceptar", (senderAlert, args) =>
                 {
-                    Toast.MakeText(this, "Se vacio la tabla de Listas de precio", ToastLength.Long).Show();
-                }
+                    if (db.VaciarTablaListasPrecio())
+                    {
+                        Toast.MakeText(this, "Se vacio la tabla de LISTAS DE PRECIO", ToastLength.Long).Show();
+                    }
+                });
+                    alert.SetNegativeButton("Cancelar", (senderAlert, args) =>
+                {
+                    Toast.MakeText(this, "Proceso cancelado", ToastLength.Long).Show();
+                });
+                Dialog dialog = alert.Create();
+                dialog.Show();
             };
 
             btnVaciarClientes.Click += delegate
             {
-                if (db.VaciarTablaClientes())
+                AlertDialog.Builder alert = new AlertDialog.Builder(this);
+                alert.SetTitle("Specify Action");
+                alert.SetMessage("Esta seguro que desea vaciar la tabla de CLIENTES?");
+                alert.SetPositiveButton("Aceptar", (senderAlert, args) =>
+                {
+                    if (db.VaciarTablaClientes())
                 {
                     Toast.MakeText(this, "Se vacio la tabla de Clientes", ToastLength.Long).Show();
                 }
+                });
+                alert.SetNegativeButton("Cancelar", (senderAlert, args) =>
+                {
+                    Toast.MakeText(this, "Proceso cancelado", ToastLength.Long).Show();
+                });
+                Dialog dialog = alert.Create();
+                dialog.Show();
             };
 
             btnVaciarPedidos.Click += delegate
             {
-                if (db.VaciarTablaPedidosMaster())
+                AlertDialog.Builder alert = new AlertDialog.Builder(this);
+                alert.SetTitle("Specify Action");
+                alert.SetMessage("Esta seguro que desea vaciar la tabla de PEDIDOS?");
+                alert.SetPositiveButton("Aceptar", (senderAlert, args) =>
                 {
-                    Toast.MakeText(this, "Se vacio la tabla de Pedidos", ToastLength.Long).Show();
-                }
+                    if (db.VaciarTablaPedidosMaster())
+                     {
+                     Toast.MakeText(this, "Se vacio la tabla de Pedidos", ToastLength.Long).Show();
+                    
+                    }
+                    if (db.VaciarTablaDetallePedidos())
+                    {
+                        Toast.MakeText(this, "Se vacio la tabla de Detalle de pedidos", ToastLength.Long).Show();
+                    }
+                });
+                alert.SetNegativeButton("Cancelar", (senderAlert, args) =>
+                {
+                    Toast.MakeText(this, "Proceso cancelado", ToastLength.Long).Show();
+                });
+                Dialog dialog = alert.Create();
+                dialog.Show();
             };
 
-            btnVaciarPedidosDetalle.Click += delegate
+            btnGuardarCotizacionMoneda.Click += delegate
             {
-                if (db.VaciarTablaDetallePedidos())
+                double tempCotiza = 0;
+                if(txtCotizacion.Text !="" & double.TryParse(txtCotizacion.Text, out tempCotiza))
                 {
-                    Toast.MakeText(this, "Se vacio la tabla de Detalle de pedidos", ToastLength.Long).Show();
+                    CotizacionMoneda moneda = new CotizacionMoneda()
+                    {
+                        id = 2,
+                        cotizacion = txtCotizacion.Text
+                    };
+                    db.ActualizarMoneda(moneda);
+                    VariablesGlobales.CotizacionDolar = double.Parse(txtCotizacion.Text);
+                    Toast.MakeText(this,"Se actualizo la cotizacion de moneda", ToastLength.Long).Show();
                 }
+                
             };
-
-        }
+            btnVolver.Click += delegate
+            {
+                StartActivity(typeof(PaginaPrincipal)); 
+            };
+        }      
     }
 }

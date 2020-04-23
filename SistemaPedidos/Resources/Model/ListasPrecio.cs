@@ -21,6 +21,13 @@ namespace SistemaPedidos.Resources.Model
         public string utilidad { get; set; }
         public int auxcol { get; set; }
     }
+
+    public class CotizacionMoneda
+    {
+        public int id { get; set; }
+        public string nombre { get; set; }
+        public string cotizacion { get; set; }
+    }
     public class ListasPrecioServer
     {
         [JsonProperty(PropertyName = "id")]

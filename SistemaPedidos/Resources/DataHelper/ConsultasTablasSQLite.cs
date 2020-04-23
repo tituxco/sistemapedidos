@@ -38,6 +38,7 @@ namespace SistemaPedidos.Resources.DataHelper
                     connection.CreateTable<CategoriaProductos>();
                     connection.CreateTable<TablaSincronizaciones>();
                     connection.CreateTable<PromocionesDescuentos>();
+                    connection.CreateTable<CotizacionMoneda>();
                     return true;
                 }
             }
@@ -45,6 +46,74 @@ namespace SistemaPedidos.Resources.DataHelper
             {
                 Toast.MakeText(Application.Context, "SQLiteEx: " + ex.Message, ToastLength.Short).Show();
                 //Toast.MakeText(Application.Context, "SQLiteEx: " + ex.Message, ToastLength.Short).Show();
+                return false;
+            }
+        }
+
+        //******************************************************************
+        //tareas sobre tabla COTIZACION DE MONEDAS
+        //******************************************************************
+
+        public List<CotizacionMoneda> VerListaMonedas()
+        {
+            try
+            {
+                using (var connection = new SQLiteConnection(System.IO.Path.Combine(folder, "kigest_sltosAriel.db")))
+                {
+                    return connection.Table<CotizacionMoneda>().ToList();
+                }
+            }
+            catch (SQLiteException ex)
+            {
+                Toast.MakeText(Application.Context, "SQLiteEx: " + ex.Message, ToastLength.Short).Show();
+                return null;
+            }
+        }
+        public bool InstertarNuevaMoneda(CotizacionMoneda nvaMoneda)
+        {
+            try
+            {
+                using (var connection = new SQLiteConnection(System.IO.Path.Combine(folder, "kigest_sltosAriel.db")))
+                {
+                    connection.Insert(nvaMoneda);
+                    return true;
+                }
+            }
+            catch (SQLiteException ex)
+            {
+                Log.Info("SQLiteException", ex.Message);
+                return false;
+            }
+        }
+        public List<CotizacionMoneda> VerDetalleMoneda(int idmoneda=2)
+        {
+            try
+            {
+                using (var connection = new SQLiteConnection(System.IO.Path.Combine(folder, "kigest_sltosAriel.db")))
+                {
+                    return connection.Query<CotizacionMoneda>("select cotizacion  from CotizacionMoneda where id=?", idmoneda ).ToList();
+                }
+            }
+            catch (SQLiteException ex)
+            {
+                Toast.MakeText(Application.Context, "SQLiteEx: " + ex.Message, ToastLength.Short).Show();
+             
+                return null;
+            }
+        }
+        public bool ActualizarMoneda(CotizacionMoneda  Moneda)
+        {
+            try
+            {
+                using (var connection = new SQLiteConnection(System.IO.Path.Combine(folder, "kigest_sltosAriel.db")))
+                {
+                    connection.Query<TablaClientes>("update CotizacionMoneda set cotizacion=? where id=?", Moneda.cotizacion,Moneda.id);
+                    return true;
+                }
+            }
+            catch (SQLiteException ex)
+            {
+                Log.Info("SQLiteException", ex.Message);
                 return false;
             }
         }
@@ -303,8 +372,8 @@ namespace SistemaPedidos.Resources.DataHelper
             {
                 using (var connection = new SQLiteConnection(System.IO.Path.Combine(folder, "kigest_sltosAriel.db")))
                 {
-                    connection.Query<Usuarios>("UPDATE Productos set precio=?, ganancia=?, utilidad1=?, utilidad2=? " +
-                        "where codProdMain=?", producto.precio,producto.ganancia,producto.utilidad1,producto.utilidad2,producto.codProdMain);
+                    connection.Query<Usuarios>("UPDATE Productos set precio=?, ganancia=?, utilidad1=?, utilidad2=?,calcular_precio=? " +
+                        "where codProdMain=?", producto.precio,producto.ganancia,producto.utilidad1,producto.utilidad2, producto.calcular_precio,producto.codProdMain);
                     return true;
                 }
             }
@@ -321,6 +390,7 @@ namespace SistemaPedidos.Resources.DataHelper
                 using (var connection = new SQLiteConnection(System.IO.Path.Combine(folder, "kigest_sltosAriel.db")))
                 {
                     connection.Query<Productos>("DELETE FROM Productos");
+                    connection.Query<Productos>("update sqlite_squence set seq=0 where name=Productos ");
                     return true;
                 }
             }

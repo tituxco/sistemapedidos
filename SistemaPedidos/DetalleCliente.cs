@@ -49,6 +49,7 @@ namespace SistemaPedidos
             txtobservaciones.Text = "OBSERVACIONES:" + dtosCliente[0].observaciones;
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
             string fecha = simpleDateFormat.Format(new Date());
+
             btnnvopedido.Click += delegate
             {
                     PedidosMaster pedidosMaster = new PedidosMaster()

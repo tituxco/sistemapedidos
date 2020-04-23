@@ -3,8 +3,13 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
   
 
-  <item android:id="@+id/btnMnuPedVolver"
-        android:title="Volver"/>
+  <item android:id="@+id/btnMnuPedLista"
+        android:title="Ver lista de pedidos"/>
+  <item android:id="@+id/btnMnuPedEnviar"
+        android:title="Enviar Pedido"/>
+  <item android:id="@+id/btnMnuPedEliminar"
+        android:title="Eliminar pedido"/>
+
 </menu>
 
 
