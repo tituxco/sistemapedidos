@@ -33,6 +33,13 @@ namespace SistemaPedidos
         ConsultasTablas dbUser;
         protected override void OnCreate(Bundle savedInstanceState)
         {
+            if (VariablesGlobales.Idvendedor == 0)
+            {
+                Intent i = new Intent(this.ApplicationContext, typeof(MainActivity));
+                i.SetFlags(ActivityFlags.NewTask | ActivityFlags.ClearTop);
+                StartActivity(i);
+                this.Finish();
+            }
             dbUser = new ConsultasTablas();
             base.OnCreate(savedInstanceState);
 

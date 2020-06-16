@@ -30,6 +30,13 @@ namespace SistemaPedidos
         //Android.Widget.SearchView busquedaCliente;
         protected override void OnCreate(Bundle bundle)
         {
+            if (VariablesGlobales.Idvendedor == 0)
+            {
+                Intent i = new Intent(this.ApplicationContext, typeof(MainActivity));
+                i.SetFlags(ActivityFlags.NewTask | ActivityFlags.ClearTop);
+                StartActivity(i);
+                this.Finish();
+            }
             SetContentView(Resource.Layout.ListViewCliente);
             lstDatosClientes = FindViewById<ListView>(Resource.Id.lstClienteLista);
             dbUser = new ConsultasTablas();

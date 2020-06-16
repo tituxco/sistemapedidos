@@ -48,6 +48,7 @@ namespace SistemaPedidos
             };
 
             interfazClientes = RestService.For<IObtenerClientesServer>("http://66.97.35.86");            
+            
             SetContentView(Resource.Layout.ListaClientesServer);
             
             var btnSincronizar = FindViewById<Button>(Resource.Id.btnClieServerSincro);

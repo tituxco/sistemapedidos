@@ -182,5 +182,7 @@ namespace SistemaPedidos.Resources
             precioTotal = Precio * Cantidad;
             return precioTotal;           
         }
+
+        
     }       
 }

@@ -17,10 +17,8 @@ using Android.Database;
 
 namespace SistemaPedidos.Resources.DataHelper
 {
-
     public class ConsultasTablas
-    {                    
-      
+    {                         
         string folder = System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal);
         public bool CrearTablasGrales()
         {
@@ -234,13 +232,13 @@ namespace SistemaPedidos.Resources.DataHelper
                 return false;
             }
         }
-        public bool EliminarCliente(TablaClientes Cliente)
+        public bool EliminarCliente(int IdCliente)
         {
             try
             {
                 using (var connection = new SQLiteConnection(System.IO.Path.Combine(folder, "kigest_sltosAriel.db")))
                 {
-                    connection.Delete(Cliente);
+                    connection.Query<TablaClientes>("delete from TablaClientes where idclientes=?",IdCliente);
                     return true;
                 }
             }
@@ -260,6 +258,24 @@ namespace SistemaPedidos.Resources.DataHelper
                         "celular=?,email=?,observaciones=?,lista_precios=?,vendedor=? where codclieMain=?",Cliente.nomapell_razon,Cliente.domicilio,Cliente.localidad,
                         Cliente.iva_tipo,Cliente.cuit,Cliente.telefono,Cliente.contacto,Cliente.celular,Cliente.email,Cliente.observaciones,Cliente.lista_precios,
                         Cliente.vendedor,Cliente.codclieMain);
+                    return true;
+                }
+            }
+            catch (SQLiteException ex)
+            {
+                Log.Info("SQLiteException", ex.Message);
+                return false;
+            }
+        }
+        public bool ActualizarClienteLocal(TablaClientes Cliente)
+        {
+            try
+            {
+                using (var connection = new SQLiteConnection(System.IO.Path.Combine(folder, "kigest_sltosAriel.db")))
+                {
+                    connection.Query<TablaClientes>("update TablaClientes set nomapell_razon=?,domicilio=?," +
+                        "celular=?,email=?,observaciones=? where idclientes=?", Cliente.nomapell_razon, Cliente.domicilio, Cliente.celular, 
+                        Cliente.email, Cliente.observaciones,Cliente.idclientes);
                     return true;
                 }
             }
@@ -321,13 +337,13 @@ namespace SistemaPedidos.Resources.DataHelper
                 return null;
             }
         }
-        public List<Productos> VerListaProductosCategoria(int categoria)
+        public List<Productos> VerListaProductosCategoria(string categoria)
         {
             try
             {
                 using (var connection = new SQLiteConnection(System.IO.Path.Combine(folder, "kigest_sltosAriel.db")))
                 {
-                    return connection.Query<Productos>("Select * from Productos where categoria=?",categoria).ToList();
+                    return connection.Query<Productos>("select * from Productos where categoria in (select id from CategoriaProductos where nombre Like '" + categoria + "')").ToList();
                 }
             }
             catch (SQLiteException ex)
@@ -886,7 +902,6 @@ namespace SistemaPedidos.Resources.DataHelper
                 return null;
             }
         }
-
         public bool VaciarTablaDetallePedidos()
         {
             try

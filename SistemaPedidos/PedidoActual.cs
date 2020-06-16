@@ -65,6 +65,13 @@ namespace SistemaPedidos
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
+            if (VariablesGlobales.Idvendedor == 0)
+            {
+                Intent i = new Intent(this.ApplicationContext, typeof(MainActivity));
+                i.SetFlags(ActivityFlags.NewTask | ActivityFlags.ClearTop);
+                StartActivity(i);
+                this.Finish();
+            }
             SetContentView(Resource.Layout.PedidoActual);
             dbUser = new ConsultasTablas();
 

@@ -9,23 +9,29 @@
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/txtNvoProdDescripcion" />
+        android:id="@+id/txtModClieNomaApelRazon" />
     <EditText
         android:hint="Domicilio"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/txtNvoProdPrecio" />
+        android:id="@+id/txtModClieDomicilio" />
     <EditText
-        android:hint="IVA (21%) por defecto"
+        android:hint="Celular"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/txtNvoProdIVA" />
+        android:id="@+id/txtModClieCelular" />
     <EditText
-        android:hint="Ingrese cantidad > 0"
+        android:hint="E-Mail"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/txtNvoProdCantidad" />
+        android:id="@+id/txtModClieEMail" />
+    <EditText
+        android:hint="Observaciones"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/txtModClieObservaciones" />
 </LinearLayout>

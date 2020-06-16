@@ -57,7 +57,7 @@ namespace SistemaPedidos.Resources
             var ClieTelefono = view.FindViewById<TextView>(Resource.Id.txtClieTelefono);
 
             ClieNombreRazon.Text = lstClientes[position].nomapell_razon;
-            ClieDirDomicilio.Text = "DOMCILIO: " + lstClientes[position].domicilio + " - " + lstClientes[position].localidad;
+            ClieDirDomicilio.Text = "DOMCILIO: " + lstClientes[position].domicilio; //+ " - " + lstClientes[position].localidad;
             ClieTelefono.Text = "TELEFONO/CELULAR: " + lstClientes[position].telefono+"/"+lstClientes[position].celular;
             ClieNombreRazon.Tag = lstClientes[position].idclientes;
             //dbUser = new ConsultasTablas();

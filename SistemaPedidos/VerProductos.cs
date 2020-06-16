@@ -50,6 +50,13 @@ namespace SistemaPedidos
         protected override void OnCreate(Bundle bundle)
         {
             base.OnCreate(bundle);
+            if (VariablesGlobales.Idvendedor == 0)
+            {
+                Intent i = new Intent(this.ApplicationContext, typeof(MainActivity));
+                i.SetFlags(ActivityFlags.NewTask | ActivityFlags.ClearTop);
+                StartActivity(i);
+                this.Finish();
+            }
             SetContentView(Resource.Layout.ListViewProductos);
             lstDatosProductos = FindViewById<ListView>(Resource.Id.lstProductosLista);
             dbUser = new ConsultasTablas();
@@ -64,8 +71,9 @@ namespace SistemaPedidos
             adapter = new ArrayAdapter(this, Android.Resource.Layout.SimpleSpinnerDropDownItem, CategoriasProd);            
             SeleccCategoria.Adapter = adapter;
             SeleccCategoria.ItemSelected += new EventHandler<AdapterView.ItemSelectedEventArgs>(ListaCategorias_ItemSelected);
-            var btnVolver = FindViewById<Button>(Resource.Id.btnProductosVolver);
+            
 
+            var btnVolver = FindViewById<Button>(Resource.Id.btnProductosVolver);
             BusquedaProducto = (SearchView)FindViewById(Resource.Id.srcProductosBusqueda);
             BusquedaProducto.QueryTextSubmit += BusquedaProducto_QuerySubmit;
             BusquedaProducto.QueryTextChange += BusquedaProducto_TextChange;
@@ -85,8 +93,8 @@ namespace SistemaPedidos
                     AlertDialog.Builder builder = new AlertDialog.Builder(this);
                     EditText cantProd = dialogo.FindViewById<EditText>(Resource.Id.txtInputCantProd);
                     EditText PrecioProd = dialogo.FindViewById<EditText>(Resource.Id.txtInputPrecioProd);                   
-
                     TextView mensajeInput = dialogo.FindViewById<TextView>(Resource.Id.txtInputCantMensaje);
+
                     builder.SetView(dialogo);
                     AlertDialog alertDialog = builder.Create();
 
@@ -176,10 +184,16 @@ namespace SistemaPedidos
                 LoadData();
             }
         }
-        private void ListaCategorias_ItemSelected(object sender,  AdapterView.ItemSelectedEventArgs e)
+        private void ListaCategorias_ItemSelected(object sender, AdapterView.ItemSelectedEventArgs e)
         {
-         
-           // Toast.MakeText(this, "Cargando categoria..." + e.Id , ToastLength.Long).Show();
+            Spinner CategSelecc = (Spinner)sender;
+
+            string CategoriaBusq = CategSelecc.GetItemAtPosition(e.Position).ToString(); 
+            lstOrigenProductos = dbUser.VerListaProductosCategoria(CategoriaBusq);
+            var adapter = new ProductoViewAdapter(this, lstOrigenProductos);
+            lstDatosProductos.Adapter = adapter;
+        //    Toast.MakeText(this, "Se cargo la categoria: " + CategSelecc.GetItemAtPosition(e.Position), ToastLength.Long).Show();
+
         }
 
         public void LoadData()
@@ -188,12 +202,12 @@ namespace SistemaPedidos
             var adapter = new ProductoViewAdapter(this, lstOrigenProductos);
             lstDatosProductos.Adapter = adapter;
         }
-        public void LoadDataCateg(int categoria)
-        {
-            lstOrigenProductos = dbUser.VerListaProductosCategoria(categoria);
-            var adapter = new ProductoViewAdapter(this, lstOrigenProductos);
-            lstDatosProductos.Adapter = adapter;
-        }
+        //public void LoadDataCateg(int categoria)
+        //{
+        //    lstOrigenProductos = dbUser.VerListaProductosCategoria(categoria);
+        //    var adapter = new ProductoViewAdapter(this, lstOrigenProductos);
+        //    lstDatosProductos.Adapter = adapter;
+        //}
         public void LoadDataBusq(string producto)
         {
             lstOrigenProductos = dbUser.VerListaProductosBusqueda(producto);

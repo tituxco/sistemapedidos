@@ -334,79 +334,94 @@ namespace SistemaPedidos
 			public const int txtLoginUsuario = 2130837594;
 			
 			// aapt resource value: 0x7F02005B
-			public const int txtNvoProdCantidad = 2130837595;
+			public const int txtModClieCelular = 2130837595;
 			
 			// aapt resource value: 0x7F02005C
-			public const int txtNvoProdDescripcion = 2130837596;
+			public const int txtModClieDomicilio = 2130837596;
 			
 			// aapt resource value: 0x7F02005D
-			public const int txtNvoProdIVA = 2130837597;
+			public const int txtModClieEMail = 2130837597;
 			
 			// aapt resource value: 0x7F02005E
-			public const int txtNvoProdPrecio = 2130837598;
+			public const int txtModClieNomaApelRazon = 2130837598;
 			
 			// aapt resource value: 0x7F02005F
-			public const int txtPedidoCantPrecio = 2130837599;
+			public const int txtModClieObservaciones = 2130837599;
 			
 			// aapt resource value: 0x7F020060
-			public const int txtPedidoCantProd = 2130837600;
+			public const int txtNvoProdCantidad = 2130837600;
 			
 			// aapt resource value: 0x7F020061
-			public const int txtPedidoCliente = 2130837601;
+			public const int txtNvoProdDescripcion = 2130837601;
 			
 			// aapt resource value: 0x7F020062
-			public const int txtPedidoDetalleCodigo = 2130837602;
+			public const int txtNvoProdIVA = 2130837602;
 			
 			// aapt resource value: 0x7F020063
-			public const int txtPedidoDetalleProducto = 2130837603;
-			
-			// aapt resource value: 0x7F020065
-			public const int txtPedidosItem = 2130837605;
+			public const int txtNvoProdPrecio = 2130837603;
 			
 			// aapt resource value: 0x7F020064
-			public const int txtPedidoTotal = 2130837604;
+			public const int txtPedidoCantPrecio = 2130837604;
+			
+			// aapt resource value: 0x7F020065
+			public const int txtPedidoCantProd = 2130837605;
 			
 			// aapt resource value: 0x7F020066
-			public const int txtProductoCodigo = 2130837606;
+			public const int txtPedidoCliente = 2130837606;
 			
 			// aapt resource value: 0x7F020067
-			public const int txtProductoDescripcion = 2130837607;
+			public const int txtPedidoDetalleCodigo = 2130837607;
 			
 			// aapt resource value: 0x7F020068
-			public const int txtProductoPrecio = 2130837608;
-			
-			// aapt resource value: 0x7F020069
-			public const int txtProductoPresentacion = 2130837609;
+			public const int txtPedidoDetalleProducto = 2130837608;
 			
 			// aapt resource value: 0x7F02006A
-			public const int txtProductoPromos = 2130837610;
+			public const int txtPedidosItem = 2130837610;
+			
+			// aapt resource value: 0x7F020069
+			public const int txtPedidoTotal = 2130837609;
 			
 			// aapt resource value: 0x7F02006B
-			public const int txtProductosServerMensaje = 2130837611;
+			public const int txtProductoCodigo = 2130837611;
 			
 			// aapt resource value: 0x7F02006C
-			public const int txtRegistroActivo = 2130837612;
+			public const int txtProductoDescripcion = 2130837612;
 			
 			// aapt resource value: 0x7F02006D
-			public const int txtRegistroApellido = 2130837613;
+			public const int txtProductoPrecio = 2130837613;
 			
 			// aapt resource value: 0x7F02006E
-			public const int txtRegistroContraseña1 = 2130837614;
+			public const int txtProductoPresentacion = 2130837614;
 			
 			// aapt resource value: 0x7F02006F
-			public const int txtRegistroContraseña2 = 2130837615;
+			public const int txtProductoPromos = 2130837615;
 			
 			// aapt resource value: 0x7F020070
-			public const int txtRegistroMensaje = 2130837616;
+			public const int txtProductosServerMensaje = 2130837616;
 			
 			// aapt resource value: 0x7F020071
-			public const int txtRegistroNombre = 2130837617;
+			public const int txtRegistroActivo = 2130837617;
 			
 			// aapt resource value: 0x7F020072
-			public const int txtRegistroUsuario = 2130837618;
+			public const int txtRegistroApellido = 2130837618;
 			
 			// aapt resource value: 0x7F020073
-			public const int txtRegistroVendedor = 2130837619;
+			public const int txtRegistroContraseña1 = 2130837619;
+			
+			// aapt resource value: 0x7F020074
+			public const int txtRegistroContraseña2 = 2130837620;
+			
+			// aapt resource value: 0x7F020075
+			public const int txtRegistroMensaje = 2130837621;
+			
+			// aapt resource value: 0x7F020076
+			public const int txtRegistroNombre = 2130837622;
+			
+			// aapt resource value: 0x7F020077
+			public const int txtRegistroUsuario = 2130837623;
+			
+			// aapt resource value: 0x7F020078
+			public const int txtRegistroVendedor = 2130837624;
 			
 			static Id()
 			{

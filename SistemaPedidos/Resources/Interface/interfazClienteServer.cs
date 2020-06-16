@@ -29,6 +29,16 @@ namespace SistemaPedidos.Resources.Interface
         [Get("/webservicesltosariel/fact_clientes_obtener.php")]
         Task<RespuestaServerClientes> GetServerClientes();
     }
+    interface IModificarClienteServer
+    {
+        [Post("/webservicesltosariel/fact_clientes_modificar.php")]
+        Task ModificarClienteServer([Body]ClienteServer clienteServer);
+    }
+    interface IEliminarClienteServer
+    {
+        [Post("/webservicesltosariel/fact_clientes_eliminar.php")]
+        Task EliminarClienteServer([Body]ClienteServer clienteServer);
+    }
     interface IObtenerProductosServer
     {
         [Get("/webservicesltosariel/fact_productos_obtener.php")]
