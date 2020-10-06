@@ -66,6 +66,7 @@ namespace SistemaPedidos.Resources
             Presentacion.Text = "PRESENTACION: X" + lstProductos[position].presentacion;
             Precio.Text = funcionesGlobales.CalcularPrecioLista(lstProductos[position].precio, 
                 lstProductos[position].ganancia,lstProductos[position].utilidad1, lstProductos[position].utilidad2,
+                lstProductos[position].utilidad3, lstProductos[position].utilidad4,
                 lstProductos[position].iva, VariablesGlobales.ListaPrecioCliente,lstProductos[position].calcular_precio );
             Promos.Text = funcionesGlobales.CalcularPromosDescuentos(lstProductos[position].codProdMain);
             dbUser = new ConsultasTablas();

@@ -43,6 +43,7 @@ namespace SistemaPedidos
         FuncionesGlobales funcionesGlobales = new FuncionesGlobales();
 
         int IdPoductoSel;
+        int IdProductoCod;
         TextView pedidoCant; 
         TextView pedidoTot;
 
@@ -163,7 +164,13 @@ namespace SistemaPedidos
 
                     List<PedidosDetalle> consProdPedido = new List<PedidosDetalle>();
                     consProdPedido = dbUser.VerPedidoDetalleID(IdPoductoSel);
+
+                    List<Productos> consultaPrecioPod = new List<Productos>();
+                    consultaPrecioPod = dbUser.VerListaProductosBusquedaCod(IdProductoCod);
                     //              
+
+
+
                     if (cantProd.Text != "" & cantProd.Text != "0")
                     {
                         cantidad = cantProd.Text;
@@ -175,7 +182,34 @@ namespace SistemaPedidos
 
                     if (PrecioProd.Text !="" & PrecioProd.Text != "0")
                     {
-                        precioUnit = PrecioProd.Text;
+
+                        precioUnit = consProdPedido[0].punit;
+                        string bonificacion = consultaPrecioPod[0].bonif;
+                        string PrecioSugerido = funcionesGlobales.CalcularPrecioLista(consultaPrecioPod[0].precio, consultaPrecioPod[0].ganancia, 
+                            consultaPrecioPod[0].utilidad1, consultaPrecioPod[0].utilidad2, consultaPrecioPod[0].utilidad3, consultaPrecioPod[0].utilidad4,
+                            consultaPrecioPod[0].iva, VariablesGlobales.ListaPrecioCliente, consultaPrecioPod[0].calcular_precio);
+
+                        double PrecioMinimo = Math.Round(double.Parse(PrecioSugerido) / ((double.Parse(bonificacion) + 100) / 100), 2);
+                        
+                        if (bonificacion != "0")
+                        {
+                            if (double.Parse(PrecioProd.Text) < PrecioMinimo)
+                            {
+                                Toast.MakeText(this, "El precio ingresado es inferior al minimo permitido, " +
+                                    "se modificara el precio al valor correspondiente ", ToastLength.Short).Show();
+                                precioUnit  = PrecioMinimo.ToString();
+                            }
+
+                            else
+                            {
+                                precioUnit  = PrecioProd.Text;
+                            }
+
+                        }
+                        else
+                        {
+                            precioUnit  = PrecioProd.Text;
+                        }                       
                     }
                     else
                     {
@@ -217,7 +251,8 @@ namespace SistemaPedidos
                 IdPoductoSel = int.Parse(e.Id.ToString());
                 
                 List<PedidosDetalle> consProdPedido = new List<PedidosDetalle>();
-                consProdPedido = dbUser.VerPedidoDetalleID (IdPoductoSel);
+                consProdPedido = dbUser.VerPedidoDetalleID (IdPoductoSel);                
+                IdProductoCod = consProdPedido[0].codProdMain;
 
                 PrecioProd.Hint = "Precio: $" + consProdPedido[0].punit;
                 precioUnit = consProdPedido[0].punit;
@@ -333,63 +368,63 @@ namespace SistemaPedidos
                 }
             };
 
-            btnAddProductoNvo.Click += delegate
-             {
-                 LayoutInflater layoutInflater = LayoutInflater.From(Application.Context);
+            //btnAddProductoNvo.Click += delegate
+            // {
+            //     LayoutInflater layoutInflater = LayoutInflater.From(Application.Context);
 
-                 View dialogo = layoutInflater.Inflate(Resource.Layout.inputBoxNvoProd, null);
+            //     View dialogo = layoutInflater.Inflate(Resource.Layout.inputBoxNvoProd, null);
 
-                 AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            //     AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
-                 EditText cantProd = dialogo.FindViewById<EditText>(Resource.Id.txtNvoProdCantidad);
-                 EditText PrecioProd = dialogo.FindViewById<EditText>(Resource.Id.txtNvoProdPrecio);
-                 EditText DescripcionProd = dialogo.FindViewById<EditText>(Resource.Id.txtNvoProdDescripcion);
-                 EditText ivaProd = dialogo.FindViewById<EditText>(Resource.Id.txtNvoProdIVA);
+            //     EditText cantProd = dialogo.FindViewById<EditText>(Resource.Id.txtNvoProdCantidad);
+            //     EditText PrecioProd = dialogo.FindViewById<EditText>(Resource.Id.txtNvoProdPrecio);
+            //     EditText DescripcionProd = dialogo.FindViewById<EditText>(Resource.Id.txtNvoProdDescripcion);
+            //     EditText ivaProd = dialogo.FindViewById<EditText>(Resource.Id.txtNvoProdIVA);
            
-                 builder.SetView(dialogo);
-                 AlertDialog alertDialog = builder.Create();
+            //     builder.SetView(dialogo);
+            //     AlertDialog alertDialog = builder.Create();
 
-                 alertDialog.SetCanceledOnTouchOutside(true);
-                 alertDialog.SetTitle("Agregar producto fuera de lista");
-                 alertDialog.SetButton("Agregar", (ss, ee) =>
-                 {
-                     if (cantProd.Text == "" || cantProd.Text == "0")
-                     {
-                         Toast.MakeText(this, "La cantidad debe ser mayor que Cero!", ToastLength.Short).Show();
-                     }
-                     else
-                     {
+            //     alertDialog.SetCanceledOnTouchOutside(true);
+            //     alertDialog.SetTitle("Agregar producto fuera de lista");
+            //     alertDialog.SetButton("Agregar", (ss, ee) =>
+            //     {
+            //         if (cantProd.Text == "" || cantProd.Text == "0")
+            //         {
+            //             Toast.MakeText(this, "La cantidad debe ser mayor que Cero!", ToastLength.Short).Show();
+            //         }
+            //         else
+            //         {
                          
-                         string cant = cantProd.Text;
-                         string pUnit = "0";
-                         if (PrecioProd.Text != "" & PrecioProd.Text != "0")
-                         {
-                             pUnit = PrecioProd.Text;
-                         }
-                         string pTotal = (double.Parse(pUnit) * double.Parse(cantProd.Text)).ToString();
-                         PedidosDetalle productoDetalle = new PedidosDetalle()
-                         {
-                             id_master = VariablesGlobales.IdPedidoenCurso,
-                             cod = "0",
-                             plu = "0",
-                             codProdMain = 0,
-                             descripcion = DescripcionProd.Text,
-                             iva = "21,00",
-                             cantidad = cantProd.Text,
-                             punit = pUnit,
-                             ptotal = pTotal
-                         };
-                         dbUser.InsertarProductoPedido(productoDetalle);
-                         Toast.MakeText(this, "Producto agregado!", ToastLength.Short).Show();
-                         LoadDataProductos(VariablesGlobales.IdPedidoenCurso);
-                     }
-                 });
-                 alertDialog.SetButton2("Cancelar", (sss, eee) =>
-                 {
-                     Toast.MakeText(this, "No se agrego el producto!", ToastLength.Short).Show();
-                 });
-                 alertDialog.Show();
-             };
+            //             string cant = cantProd.Text;
+            //             string pUnit = "0";
+            //             if (PrecioProd.Text != "" & PrecioProd.Text != "0")
+            //             {
+            //                 pUnit = PrecioProd.Text;
+            //             }
+            //             string pTotal = (double.Parse(pUnit) * double.Parse(cantProd.Text)).ToString();
+            //             PedidosDetalle productoDetalle = new PedidosDetalle()
+            //             {
+            //                 id_master = VariablesGlobales.IdPedidoenCurso,
+            //                 cod = "0",
+            //                 plu = "0",
+            //                 codProdMain = 0,
+            //                 descripcion = DescripcionProd.Text,
+            //                 iva = "21,00",
+            //                 cantidad = cantProd.Text,
+            //                 punit = pUnit,
+            //                 ptotal = pTotal
+            //             };
+            //             dbUser.InsertarProductoPedido(productoDetalle);
+            //             Toast.MakeText(this, "Producto agregado!", ToastLength.Short).Show();
+            //             LoadDataProductos(VariablesGlobales.IdPedidoenCurso);
+            //         }
+            //     });
+            //     alertDialog.SetButton2("Cancelar", (sss, eee) =>
+            //     {
+            //         Toast.MakeText(this, "No se agrego el producto!", ToastLength.Short).Show();
+            //     });
+            //     alertDialog.Show();
+            // };
 
                       
        

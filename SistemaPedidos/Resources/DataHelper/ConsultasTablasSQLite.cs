@@ -382,14 +382,31 @@ namespace SistemaPedidos.Resources.DataHelper
                 return null;
             }
         }
+        public List<Productos> VerListaProductosBusquedaCod(int CodProducto)
+        {
+            try
+            {
+                using (var connection = new SQLiteConnection(System.IO.Path.Combine(folder, "kigest_sltosAriel.db")))
+                {
+                    return connection.Query<Productos>("Select * from Productos where codProdMain=?", CodProducto).ToList();
+                }
+            }
+            catch (SQLiteException ex)
+            {
+                Toast.MakeText(Application.Context, "SQLiteEx: " + ex.Message, ToastLength.Short).Show();
+                return null;
+            }
+        }
+
         public bool ActualizarProducto(Productos producto)
         {
             try
             {
                 using (var connection = new SQLiteConnection(System.IO.Path.Combine(folder, "kigest_sltosAriel.db")))
                 {
-                    connection.Query<Usuarios>("UPDATE Productos set precio=?, ganancia=?, utilidad1=?, utilidad2=?,calcular_precio=? " +
-                        "where codProdMain=?", producto.precio,producto.ganancia,producto.utilidad1,producto.utilidad2, producto.calcular_precio,producto.codProdMain);
+                    connection.Query<Usuarios>("UPDATE Productos set precio=?, ganancia=?, utilidad1=?, utilidad2=?,calcular_precio=?,bonif=?,utilidad3=?,utilidad4=? " +
+                        "where codProdMain=?", producto.precio,producto.ganancia,producto.utilidad1,producto.utilidad2, producto.calcular_precio,producto.bonif, 
+                        producto.utilidad3 , producto.utilidad3,producto.codProdMain);
                     return true;
                 }
             }

@@ -60,110 +60,110 @@ namespace SistemaPedidos
 		public partial class Id
 		{
 			
-			// aapt resource value: 0x7F020002
-			public const int btnClienteAgregar = 2130837506;
+			// aapt resource value: 0x7F020000
+			public const int appVersion = 2130837504;
 			
 			// aapt resource value: 0x7F020003
-			public const int btnClienteListaVolver = 2130837507;
-			
-			// aapt resource value: 0x7F020000
-			public const int btnClieServerSincro = 2130837504;
-			
-			// aapt resource value: 0x7F020001
-			public const int btnClieServerVolver = 2130837505;
+			public const int btnClienteAgregar = 2130837507;
 			
 			// aapt resource value: 0x7F020004
-			public const int btnConfVolverInicio = 2130837508;
+			public const int btnClienteListaVolver = 2130837508;
+			
+			// aapt resource value: 0x7F020001
+			public const int btnClieServerSincro = 2130837505;
+			
+			// aapt resource value: 0x7F020002
+			public const int btnClieServerVolver = 2130837506;
 			
 			// aapt resource value: 0x7F020005
-			public const int btnCotizacionDolar = 2130837509;
+			public const int btnConfVolverInicio = 2130837509;
 			
 			// aapt resource value: 0x7F020006
-			public const int btnDetalleClieModificar = 2130837510;
+			public const int btnCotizacionDolar = 2130837510;
 			
 			// aapt resource value: 0x7F020007
-			public const int btnDetalleClieNvoPedido = 2130837511;
+			public const int btnDetalleClieModificar = 2130837511;
 			
 			// aapt resource value: 0x7F020008
-			public const int btnDetalleClieVolver = 2130837512;
+			public const int btnDetalleClieNvoPedido = 2130837512;
 			
 			// aapt resource value: 0x7F020009
-			public const int btnListasPrecioVolver = 2130837513;
+			public const int btnDetalleClieVolver = 2130837513;
 			
 			// aapt resource value: 0x7F02000A
-			public const int btnListasServerSincronizar = 2130837514;
+			public const int btnListasPrecioVolver = 2130837514;
 			
 			// aapt resource value: 0x7F02000B
-			public const int btnListasServerVer = 2130837515;
+			public const int btnListasServerSincronizar = 2130837515;
 			
 			// aapt resource value: 0x7F02000C
-			public const int btnLoginIngresar = 2130837516;
+			public const int btnListasServerVer = 2130837516;
 			
 			// aapt resource value: 0x7F02000D
-			public const int btnLoginRegistrar = 2130837517;
+			public const int btnLoginIngresar = 2130837517;
 			
 			// aapt resource value: 0x7F02000E
-			public const int btnMnuCliNuevoCliente = 2130837518;
+			public const int btnLoginRegistrar = 2130837518;
 			
 			// aapt resource value: 0x7F02000F
-			public const int btnMnuCliSincronizar = 2130837519;
+			public const int btnMnuCliNuevoCliente = 2130837519;
 			
 			// aapt resource value: 0x7F020010
-			public const int btnMnuCliVolver = 2130837520;
+			public const int btnMnuCliSincronizar = 2130837520;
 			
 			// aapt resource value: 0x7F020011
-			public const int btnMnuPedEliminar = 2130837521;
+			public const int btnMnuCliVolver = 2130837521;
 			
 			// aapt resource value: 0x7F020012
-			public const int btnMnuPedEnviar = 2130837522;
+			public const int btnMnuPedEliminar = 2130837522;
 			
 			// aapt resource value: 0x7F020013
-			public const int btnMnuPedLista = 2130837523;
+			public const int btnMnuPedEnviar = 2130837523;
 			
 			// aapt resource value: 0x7F020014
-			public const int btnMnuPrinVerClientes = 2130837524;
+			public const int btnMnuPedLista = 2130837524;
 			
 			// aapt resource value: 0x7F020015
-			public const int btnMnuPrinVerListas = 2130837525;
+			public const int btnMnuPrinVerClientes = 2130837525;
 			
 			// aapt resource value: 0x7F020016
-			public const int btnMnuPrinVerPedidos = 2130837526;
+			public const int btnMnuPrinVerListas = 2130837526;
 			
 			// aapt resource value: 0x7F020017
-			public const int btnMnuPrinVerProductos = 2130837527;
+			public const int btnMnuPrinVerPedidos = 2130837527;
 			
 			// aapt resource value: 0x7F020018
-			public const int btnMnuProdVolver = 2130837528;
+			public const int btnMnuPrinVerProductos = 2130837528;
 			
 			// aapt resource value: 0x7F020019
-			public const int btnPedidoActAddProd = 2130837529;
+			public const int btnMnuProdVolver = 2130837529;
 			
 			// aapt resource value: 0x7F02001A
-			public const int btnPedidoActAgregar = 2130837530;
+			public const int btnPedidoActAddProd = 2130837530;
 			
 			// aapt resource value: 0x7F02001B
-			public const int btnPedidoActFinalizar = 2130837531;
+			public const int btnPedidoActAgregar = 2130837531;
 			
 			// aapt resource value: 0x7F02001C
-			public const int btnPedidosListaVolver = 2130837532;
+			public const int btnPedidoActFinalizar = 2130837532;
 			
 			// aapt resource value: 0x7F02001D
-			public const int btnPrincActualizarApp = 2130837533;
+			public const int btnPedidosListaVolver = 2130837533;
 			
 			// aapt resource value: 0x7F02001E
-			public const int btnPrincManejoTablas = 2130837534;
+			public const int btnPrincActualizarApp = 2130837534;
 			
 			// aapt resource value: 0x7F02001F
-			public const int btnPrincSincListasPrecio = 2130837535;
+			public const int btnPrincManejoTablas = 2130837535;
 			
 			// aapt resource value: 0x7F020020
-			public const int btnPrincSincProd = 2130837536;
+			public const int btnPrincSincListasPrecio = 2130837536;
 			
 			// aapt resource value: 0x7F020021
-			public const int btnPrincSincroClie = 2130837537;
+			public const int btnPrincSincProd = 2130837537;
 			
 			// aapt resource value: 0x7F020022
-			public const int btnPrincSincroPed = 2130837538;
+			public const int btnPrincSincroClie = 2130837538;
 			
 			// aapt resource value: 0x7F020023
 			public const int btnPrincVerClientes = 2130837539;

@@ -117,7 +117,10 @@ namespace SistemaPedidos
                             codigo = producto.codigo,
                             calcular_precio = producto.calcular_precio,
                             categoria = producto.categoria,
-                            presentacion = producto.presentacion
+                            presentacion = producto.presentacion,
+                            bonif=producto.bonif,
+                            utilidad3 = producto.utilidad3 ,
+                            utilidad4  = producto.utilidad4 
                         };
                         contadoradd++;
                         contadortot++;
@@ -135,7 +138,10 @@ namespace SistemaPedidos
                             //bonif = producto.bonif,
                             utilidad1 = producto.utilidad1,
                             utilidad2 = producto.utilidad2,
-                            calcular_precio=producto.calcular_precio
+                            utilidad3 = producto.utilidad3,
+                            utilidad4 = producto.utilidad4,
+                            calcular_precio =producto.calcular_precio,
+                            bonif=producto.bonif
                         };
                         contadormod++;
                         contadortot++;

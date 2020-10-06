@@ -7,6 +7,7 @@ using Android.App;
 using Android.Content;
 using Android.OS;
 using Android.Runtime;
+using Android.Support.V7.AppCompat;
 using Android.Views;
 using Android.Widget;
 using SistemaPedidos.Resources.DataHelper;
@@ -78,10 +79,12 @@ namespace SistemaPedidos
            
             var sincroClientes = FindViewById<Button>(Resource.Id.btnPrincSincroClie);
             var sincroProductos = FindViewById<Button>(Resource.Id.btnPrincSincProd);
-            var sincroPedidos = FindViewById<Button>(Resource.Id.btnPrincSincroPed);
+            //var sincroPedidos = FindViewById<Button>(Resource.Id.btnPrincSincroPed);
             var sincroListas = FindViewById<Button>(Resource.Id.btnPrincSincListasPrecio);
             var manejoTablas = FindViewById<Button>(Resource.Id.btnPrincManejoTablas);
             var actualizarApp = FindViewById<Button>(Resource.Id.btnPrincActualizarApp);
+            var versionApp= FindViewById<TextView>(Resource.Id.appVersion);
+            versionApp.Text = "Versión de la aplicación: " ; 
             sincroClientes.Click += delegate
             {
                 StartActivity(typeof(SincronizarClientes));
@@ -101,7 +104,7 @@ namespace SistemaPedidos
             actualizarApp.Click += delegate
             {
                 Intent abrirWeb = new Intent(Intent.ActionView);
-                abrirWeb.SetData(Android.Net.Uri.Parse("http://66.97.35.86/sistemaPedidosAndroid"));
+                abrirWeb.SetData(Android.Net.Uri.Parse("http://66.97.35.86/sistemaPedidosAndroid/kigest.sistemapedidos.apk"));
 
                 StartActivity(abrirWeb);
             };

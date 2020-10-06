@@ -116,10 +116,32 @@ namespace SistemaPedidos
 
                             string cant = cantProd.Text;
                             string pUnit = funcionesGlobales.CalcularPrecioLista(agregaProd[0].precio, agregaProd[0].ganancia, agregaProd[0].utilidad1 , 
-                                agregaProd[0].utilidad2 , agregaProd[0].iva, VariablesGlobales.ListaPrecioCliente, agregaProd[0].calcular_precio );                                                 
-                            if (PrecioProd.Text !="" & PrecioProd.Text  != "0")
+                            agregaProd[0].utilidad2 , agregaProd[0].utilidad3, agregaProd[0].utilidad4, agregaProd[0].iva, VariablesGlobales.ListaPrecioCliente, agregaProd[0].calcular_precio );
+
+                            if (PrecioProd.Text != "" & PrecioProd.Text != "0")
                             {
-                                pUnit = PrecioProd.Text;
+                                string bonificacion = agregaProd[0].bonif;
+                                string PrecioSugerido = pUnit;
+                                double PrecioMinimo = Math.Round(double.Parse(pUnit) / ((double.Parse(bonificacion) + 100) / 100),2) ;
+                                if (bonificacion != "0")
+                                {
+                                    if (double.Parse(PrecioProd.Text) < PrecioMinimo)
+                                    {
+                                        Toast.MakeText(this, "El precio ingresado es inferior al minimo permitido, " +
+                                            "se modificara el precio al valor correspondiente ", ToastLength.Short).Show();
+                                        pUnit = PrecioMinimo.ToString();
+                                    }
+
+                                    else
+                                    {
+                                        pUnit = PrecioProd.Text;
+                                    }
+
+                                }
+                                else
+                                {
+                                    pUnit = PrecioProd.Text;                                   
+                                }
                             }
                             string pTotal = (double.Parse(pUnit) * double.Parse(cantProd.Text)).ToString();
                             PedidosDetalle productoDetalle = new PedidosDetalle()
@@ -147,7 +169,7 @@ namespace SistemaPedidos
                     List<Productos> selectPrecio = new List<Productos>();                    
                     selectPrecio = dbUser.VerListaProductosBusquedaID(IdPoductoSel);
                     PrecioProdSel = funcionesGlobales.CalcularPrecioLista(selectPrecio[0].precio, selectPrecio[0].ganancia, selectPrecio[0].utilidad1,
-                                selectPrecio[0].utilidad2, selectPrecio[0].iva, VariablesGlobales.ListaPrecioCliente, selectPrecio[0].calcular_precio );
+                                selectPrecio[0].utilidad2, selectPrecio[0].utilidad3, selectPrecio[0].utilidad4, selectPrecio[0].iva, VariablesGlobales.ListaPrecioCliente, selectPrecio[0].calcular_precio );
                     
                     PrecioProd.Hint = "Precio: $" + PrecioProdSel;
                     alertDialog.Show();
