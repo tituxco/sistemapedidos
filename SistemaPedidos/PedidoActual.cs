@@ -186,7 +186,8 @@ namespace SistemaPedidos
                         precioUnit = consProdPedido[0].punit;
                         string bonificacion = consultaPrecioPod[0].bonif;
                         string PrecioSugerido = funcionesGlobales.CalcularPrecioLista(consultaPrecioPod[0].precio, consultaPrecioPod[0].ganancia, 
-                            consultaPrecioPod[0].utilidad1, consultaPrecioPod[0].utilidad2, consultaPrecioPod[0].utilidad3, consultaPrecioPod[0].utilidad4,
+                            consultaPrecioPod[0].utilidad1, consultaPrecioPod[0].utilidad2, consultaPrecioPod[0].utilidad3, consultaPrecioPod[0].utilidad4, 
+                            consultaPrecioPod[0].utilidad5,
                             consultaPrecioPod[0].iva, VariablesGlobales.ListaPrecioCliente, consultaPrecioPod[0].calcular_precio);
 
                         double PrecioMinimo = Math.Round(double.Parse(PrecioSugerido) / ((double.Parse(bonificacion) + 100) / 100), 2);

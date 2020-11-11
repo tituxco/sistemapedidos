@@ -33,6 +33,7 @@ namespace SistemaPedidos.Resources.Model
         public string bonif { get; set; }
         public string utilidad3 { get; set; }
         public string utilidad4 { get; set; }
+        public string utilidad5 { get; set; }
     }
 
     public class ProductosServer
@@ -78,9 +79,10 @@ namespace SistemaPedidos.Resources.Model
 
         [JsonProperty(PropertyName = "utilidad3")]
         public string utilidad3 { get; set; }
-
         [JsonProperty(PropertyName = "utilidad4")]
         public string utilidad4 { get; set; }
+        [JsonProperty(PropertyName = "utilidad5")]
+        public string utilidad5 { get; set; }
         public override string ToString()
         {
             return descripcion;

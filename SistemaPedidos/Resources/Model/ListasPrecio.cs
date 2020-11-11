@@ -20,6 +20,10 @@ namespace SistemaPedidos.Resources.Model
         public string nombre { get; set; }
         public string utilidad { get; set; }
         public int auxcol { get; set; }
+        public override string ToString()
+        {
+            return nombre;
+        }
     }
 
     public class CotizacionMoneda

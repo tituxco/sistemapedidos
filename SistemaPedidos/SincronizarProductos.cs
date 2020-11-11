@@ -95,8 +95,8 @@ namespace SistemaPedidos
                 int contadormod = 0;
                 int contadortot = 0;
                 int CantProd = Productos.Count;
-
-
+                dbUser.VaciarTablaProductos();               
+                
                 foreach (ProductosServer producto in Productos)
                 {
                     IEnumerable<ConsultasTablas> resultado = BuscarProductos(db, producto.id);
@@ -120,7 +120,8 @@ namespace SistemaPedidos
                             presentacion = producto.presentacion,
                             bonif=producto.bonif,
                             utilidad3 = producto.utilidad3 ,
-                            utilidad4  = producto.utilidad4 
+                            utilidad4  = producto.utilidad4,
+                            utilidad5 = producto.utilidad5
                         };
                         contadoradd++;
                         contadortot++;
@@ -140,6 +141,7 @@ namespace SistemaPedidos
                             utilidad2 = producto.utilidad2,
                             utilidad3 = producto.utilidad3,
                             utilidad4 = producto.utilidad4,
+                            utilidad5 = producto.utilidad5,
                             calcular_precio =producto.calcular_precio,
                             bonif=producto.bonif
                         };
@@ -171,7 +173,7 @@ namespace SistemaPedidos
                 
                 RespuestaServerCategProductos respuestCatprod = await interfazCatprod.GetServerCategProductos();
                 categoriaProductos = respuestCatprod.ListaCategoriaProductos;
-
+                //dbUser.VaciarTablaCategoriasProd();
                 foreach (CategoriaProductosServer categoria in categoriaProductos)
                 {
                     IEnumerable<ConsultasTablas> resultadocatprod = BuscarCatProd(db, categoria.id);
@@ -180,7 +182,8 @@ namespace SistemaPedidos
                         CategoriaProductos catprodLocal = new CategoriaProductos()
                         {
                             id = categoria.id,
-                            nombre = categoria.nombre
+                            nombre = categoria.nombre,
+                            sincro=categoria.sincro
                         };
                         dbUser.InsertarCateogoriaProd(catprodLocal);
                     }
@@ -189,7 +192,8 @@ namespace SistemaPedidos
                         CategoriaProductos catprodLocal = new CategoriaProductos()
                         {
                             id = categoria.id,
-                            nombre = categoria.nombre
+                            nombre = categoria.nombre,
+                            sincro=categoria.sincro
                         };
                         dbUser.ActualizarCategoriaProd(catprodLocal);
 

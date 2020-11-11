@@ -16,7 +16,7 @@ namespace SistemaPedidos.Resources
 {
     public class FuncionesGlobales
     {
-        public string CalcularPrecioLista(string precio, string utilidad, string utilidad1, string utilidad2,string utilidad3, string utilidad4, string iva, int idLista, int moneda)
+        public string CalcularPrecioLista(string precio, string utilidad, string utilidad1, string utilidad2,string utilidad3, string utilidad4, string utilidad5, string iva, int idLista, int moneda)
         {
             List<ListasPrecio> listasPrecios = new List<ListasPrecio>();
             ConsultasTablas dbuser = new ConsultasTablas();
@@ -38,14 +38,16 @@ namespace SistemaPedidos.Resources
             if (utilidad2 == "") { utilidad2 = "0"; }
             if (utilidad3 == "") { utilidad3 = "0"; }
             if (utilidad4 == "") { utilidad4 = "0"; }
+            if (utilidad5 == "") { utilidad5 = "0"; }
 
-            precio = precio.Replace(",", ".");
-            iva = iva.Replace(",", ".");
-            utilidad = utilidad.Replace(",", ".");
-            utilidad1 = utilidad1.Replace(",", ".");
-            utilidad2 = utilidad2.Replace(",", ".");
-            utilidad3 = utilidad3.Replace(",", ".");
-            utilidad4 = utilidad4.Replace(",", ".");
+            precio = CambiarPuntoDecimalEU(precio);
+            iva = CambiarPuntoDecimalEU(iva);
+            utilidad = CambiarPuntoDecimalEU(utilidad);
+            utilidad1 = CambiarPuntoDecimalEU(utilidad1);
+            utilidad2 = CambiarPuntoDecimalEU(utilidad2);
+            utilidad3 = CambiarPuntoDecimalEU(utilidad3);
+            utilidad4 = CambiarPuntoDecimalEU(utilidad4);
+            utilidad5 = CambiarPuntoDecimalEU(utilidad5);
 
             double LISTA =0;
             double precioFinal=0;
@@ -57,6 +59,7 @@ namespace SistemaPedidos.Resources
             double GANANCIA2 = Convert.ToDouble(utilidad2);
             double GANANCIA3 = Convert.ToDouble(utilidad3);
             double GANANCIA4 = Convert.ToDouble(utilidad4);
+            double GANANCIA5 = Convert.ToDouble(utilidad5);
             double utilSum = GANANCIA2;
 
             IVA = (IVA + 100) / 100;
@@ -65,8 +68,9 @@ namespace SistemaPedidos.Resources
             GANANCIA2 = (GANANCIA2 + 100) / 100;
             GANANCIA3 = (GANANCIA3 + 100) / 100;
             GANANCIA4 = (GANANCIA4 + 100) / 100;
+            GANANCIA5 = (GANANCIA5 + 100) / 100;
 
-           
+
             if (idLista == 0)
             {
                 listasPrecios = dbuser.VerListaPrecio();
@@ -89,32 +93,68 @@ namespace SistemaPedidos.Resources
                         LISTA = Convert.ToDouble(listasPrecios[i].utilidad.Replace(",", "."));
                         utilSum = (utilSum + LISTA + 100) / 100;
                         LISTA = (LISTA + 100) / 100;
-
-                        switch (auxcol)
+                        if (VariablesGlobales.MetodoCalculo == 1)
                         {
-                            case 0:
-                                precioFinal = Math.Round(PRECIO * GANANCIA * IVA * LISTA * cotizacion, 2);
-                                Precios = Precios + listasPrecios[i].nombre + " : $" + precioFinal + "\n";
-                                break;
-                            case 1:
-                                precioFinal = Math.Round(PRECIO * GANANCIA1 * IVA * LISTA * cotizacion, 2);
-                                Precios = Precios + listasPrecios[i].nombre + " : $" + precioFinal + "\n";
-                                break;
-                            case 2:
-                                precioFinal = Math.Round(PRECIO * ((GANANCIA2+LISTA)-1)  * IVA * cotizacion, 2);
-                                Precios = Precios + listasPrecios[i].nombre + " : $" + precioFinal + "\n"; 
-                                break;
-                            case 3:
-                                precioFinal = Math.Round(PRECIO * GANANCIA3 * IVA * LISTA * cotizacion, 2);
-                                Precios = Precios + listasPrecios[i].nombre + " : $" + precioFinal + "\n";
-                                break;
-                            case 4:
-                                precioFinal = Math.Round(PRECIO * GANANCIA4 * IVA * LISTA * cotizacion, 2);
-                                Precios = Precios + listasPrecios[i].nombre + " : $" + precioFinal + "\n";
-                                break;
-                        }                                                                             
+                            switch (auxcol)
+                            {
+                                case 0:
+                                    precioFinal = Math.Round(PRECIO * IVA * GANANCIA * LISTA * cotizacion, 2);
+                                    Precios = Precios + listasPrecios[i].nombre + " : $" + precioFinal + "\n";
+                                    break;
+                                case 1:
+                                    precioFinal = Math.Round(PRECIO * IVA * GANANCIA1  * LISTA * cotizacion, 2);
+                                    Precios = Precios + listasPrecios[i].nombre + " : $" + precioFinal + "\n";
+                                    break;
+                                case 2:
+                                    precioFinal = Math.Round(PRECIO *  IVA * GANANCIA2  * LISTA * cotizacion, 2);
+                                    Precios = Precios + listasPrecios[i].nombre + " : $" + precioFinal + "\n";
+                                    break;
+                                case 3:
+                                    precioFinal = Math.Round(PRECIO * IVA * GANANCIA3 * LISTA * cotizacion, 2);
+                                    Precios = Precios + listasPrecios[i].nombre + " : $" + precioFinal + "\n";
+                                    break;
+                                case 4:
+                                    precioFinal = Math.Round(PRECIO * IVA * GANANCIA4  * LISTA * cotizacion, 2);
+                                    Precios = Precios + listasPrecios[i].nombre + " : $" + precioFinal + "\n";
+                                    break;
+                                case 5:
+                                    precioFinal = Math.Round(PRECIO * IVA * GANANCIA5 *  LISTA * cotizacion, 2);
+                                    Precios = Precios + listasPrecios[i].nombre + " : $" + precioFinal + "\n";
+                                    break;
+                            }
+                        }else if (VariablesGlobales.MetodoCalculo == 0)
+                        {
+                            switch (auxcol)
+                            {
+                                case 0:
+                                    precioFinal = Math.Round(PRECIO * IVA * ((GANANCIA + LISTA)-1) * cotizacion, 2);
+                                    Precios = Precios + listasPrecios[i].nombre + " : $" + precioFinal + "\n";
+                                    break;
+                                case 1:
+                                    precioFinal = Math.Round(PRECIO * IVA * ((GANANCIA1 + LISTA) - 1) * cotizacion, 2);
+                                    Precios = Precios + listasPrecios[i].nombre + " : $" + precioFinal + "\n";
+                                    break;
+                                case 2:
+                                    precioFinal = Math.Round(PRECIO * IVA * ((GANANCIA2 + LISTA) - 1) * cotizacion, 2);
+                                    Precios = Precios + listasPrecios[i].nombre + " : $" + precioFinal + "\n";
+                                    break;
+                                case 3:
+                                    precioFinal = Math.Round(PRECIO * IVA * ((GANANCIA3 + LISTA) - 1) * cotizacion, 2);
+                                    Precios = Precios + listasPrecios[i].nombre + " : $" + precioFinal + "\n";
+                                    break;
+                                case 4:
+                                    precioFinal = Math.Round(PRECIO * IVA * ((GANANCIA4 + LISTA) - 1) * cotizacion, 2);
+                                    Precios = Precios + listasPrecios[i].nombre + " : $" + precioFinal + "\n";
+                                    break;
+                                case 5:
+                                    precioFinal = Math.Round(PRECIO * IVA * ((GANANCIA5 + LISTA) - 1) * cotizacion, 2);
+                                    Precios = Precios + listasPrecios[i].nombre + " : $" + precioFinal + "\n";
+                                    break;
+                            }
+                        }
                     }
                 }
+                Precios = "Seleccione un cliente para poder ver los precios";
                 return Precios;
             }
             else
@@ -136,28 +176,65 @@ namespace SistemaPedidos.Resources
                     LISTA = Convert.ToDouble(listasPrecios[0].utilidad.Replace(",", "."));
                     LISTA = (LISTA + 100) / 100;
 
-                    switch (auxcol)
+                    if (VariablesGlobales.MetodoCalculo == 1)
                     {
-                        case 0:
-                            precioFinal = Math.Round(PRECIO * GANANCIA * IVA * LISTA * cotizacion, 2);
-                            Precios = precioFinal.ToString() ;
-                            break;
-                        case 1:
-                            precioFinal = Math.Round(PRECIO * GANANCIA1 * IVA * LISTA * cotizacion, 2);
-                            Precios = precioFinal.ToString();
-                            break;
-                        case 2:
-                            precioFinal = Math.Round(PRECIO * GANANCIA2 * IVA * LISTA * cotizacion, 2);
-                            Precios = precioFinal.ToString();
-                            break;
-                        case 3:
-                            precioFinal = Math.Round(PRECIO * GANANCIA3 * IVA * LISTA * cotizacion, 2);
-                            Precios = precioFinal.ToString();
-                            break;
-                        case 4:
-                            precioFinal = Math.Round(PRECIO * GANANCIA4 * IVA * LISTA * cotizacion, 2);
-                            Precios = precioFinal.ToString();
-                            break;
+                        switch (auxcol)
+                        {
+                            case 0:
+                                precioFinal = Math.Round(PRECIO * IVA * GANANCIA * LISTA * cotizacion, 2);
+                                Precios = precioFinal.ToString(); 
+                                break;
+                            case 1:
+                                precioFinal = Math.Round(PRECIO * IVA * GANANCIA1 * LISTA * cotizacion, 2);
+                                Precios = precioFinal.ToString();
+                                break;
+                            case 2:
+                                precioFinal = Math.Round(PRECIO * IVA * GANANCIA2 * LISTA * cotizacion, 2);
+                                Precios = precioFinal.ToString();
+                                break;
+                            case 3:
+                                precioFinal = Math.Round(PRECIO * IVA * GANANCIA3 * LISTA * cotizacion, 2);
+                                Precios = precioFinal.ToString();
+                                break;
+                            case 4:
+                                precioFinal = Math.Round(PRECIO * IVA * GANANCIA4 * LISTA * cotizacion, 2);
+                                Precios = precioFinal.ToString();
+                                break;
+                            case 5:
+                                precioFinal = Math.Round(PRECIO * IVA * GANANCIA5 * LISTA * cotizacion, 2);
+                                Precios = precioFinal.ToString();
+                                break;
+                        }
+                    }
+                    else if (VariablesGlobales.MetodoCalculo == 0)
+                    {
+                        switch (auxcol)
+                        {
+                            case 0:
+                                precioFinal = Math.Round(PRECIO * IVA * ((GANANCIA + LISTA) - 1) * cotizacion, 2);
+                                Precios = precioFinal.ToString();
+                                break;
+                            case 1:
+                                precioFinal = Math.Round(PRECIO * IVA * ((GANANCIA1 + LISTA) - 1) * cotizacion, 2);
+                                Precios = precioFinal.ToString();
+                                break;
+                            case 2:
+                                precioFinal = Math.Round(PRECIO * IVA * ((GANANCIA2 + LISTA) - 1) * cotizacion, 2);
+                                Precios = precioFinal.ToString();
+                                break;
+                            case 3:
+                                precioFinal = Math.Round(PRECIO * IVA * ((GANANCIA3 + LISTA) - 1) * cotizacion, 2);
+                                Precios = precioFinal.ToString();
+                                break;
+                            case 4:
+                                precioFinal = Math.Round(PRECIO * IVA * ((GANANCIA4 + LISTA) - 1) * cotizacion, 2);
+                                Precios = precioFinal.ToString();
+                                break;
+                            case 5:
+                                precioFinal = Math.Round(PRECIO * IVA * ((GANANCIA5 + LISTA) - 1) * cotizacion, 2);
+                                Precios = precioFinal.ToString();
+                                break;
+                        }
                     }
                     return Precios;
                 }
@@ -175,6 +252,14 @@ namespace SistemaPedidos.Resources
                 calculo += "x" + promocionesDescuentos[i].compra_min + ": " + promocionesDescuentos[i].descuento_porc + "% -"; 
             }
             return calculo;    
+        }
+
+        public string CambiarPuntoDecimalEU(string precio)
+        {
+            var temp = precio.Replace(".", "<TEMP>");
+            var temp2 = temp.Replace(",", ".");
+            var replaced = temp2.Replace("<TEMP>", ",");
+            return replaced;
         }
         public string AplicarPromosDescuentos(int idproducto, string cantidad)
         {

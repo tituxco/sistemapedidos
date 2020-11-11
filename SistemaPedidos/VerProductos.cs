@@ -70,6 +70,7 @@ namespace SistemaPedidos
             CategoriasProd = dbUser.verCategoriaProductos();
             adapter = new ArrayAdapter(this, Android.Resource.Layout.SimpleSpinnerDropDownItem, CategoriasProd);            
             SeleccCategoria.Adapter = adapter;
+            //SeleccCategoria.SetSelection(adapter.GetPosition("PRODUCTOS REVENDEDORES"));
             SeleccCategoria.ItemSelected += new EventHandler<AdapterView.ItemSelectedEventArgs>(ListaCategorias_ItemSelected);
             
 
@@ -116,7 +117,8 @@ namespace SistemaPedidos
 
                             string cant = cantProd.Text;
                             string pUnit = funcionesGlobales.CalcularPrecioLista(agregaProd[0].precio, agregaProd[0].ganancia, agregaProd[0].utilidad1 , 
-                            agregaProd[0].utilidad2 , agregaProd[0].utilidad3, agregaProd[0].utilidad4, agregaProd[0].iva, VariablesGlobales.ListaPrecioCliente, agregaProd[0].calcular_precio );
+                            agregaProd[0].utilidad2 , agregaProd[0].utilidad3, agregaProd[0].utilidad4, agregaProd[0].utilidad5, agregaProd[0].iva, 
+                            VariablesGlobales.ListaPrecioCliente, agregaProd[0].calcular_precio );
 
                             if (PrecioProd.Text != "" & PrecioProd.Text != "0")
                             {
@@ -169,7 +171,8 @@ namespace SistemaPedidos
                     List<Productos> selectPrecio = new List<Productos>();                    
                     selectPrecio = dbUser.VerListaProductosBusquedaID(IdPoductoSel);
                     PrecioProdSel = funcionesGlobales.CalcularPrecioLista(selectPrecio[0].precio, selectPrecio[0].ganancia, selectPrecio[0].utilidad1,
-                                selectPrecio[0].utilidad2, selectPrecio[0].utilidad3, selectPrecio[0].utilidad4, selectPrecio[0].iva, VariablesGlobales.ListaPrecioCliente, selectPrecio[0].calcular_precio );
+                                selectPrecio[0].utilidad2, selectPrecio[0].utilidad3, selectPrecio[0].utilidad4, selectPrecio[0].utilidad5, selectPrecio[0].iva, 
+                                VariablesGlobales.ListaPrecioCliente, selectPrecio[0].calcular_precio );
                     
                     PrecioProd.Hint = "Precio: $" + PrecioProdSel;
                     alertDialog.Show();
@@ -192,7 +195,7 @@ namespace SistemaPedidos
         {
             if (e.Query == "")
             {
-                LoadData();
+                LoadDataBusq("%");
             }
             else
             {
@@ -214,22 +217,16 @@ namespace SistemaPedidos
             lstOrigenProductos = dbUser.VerListaProductosCategoria(CategoriaBusq);
             var adapter = new ProductoViewAdapter(this, lstOrigenProductos);
             lstDatosProductos.Adapter = adapter;
-        //    Toast.MakeText(this, "Se cargo la categoria: " + CategSelecc.GetItemAtPosition(e.Position), ToastLength.Long).Show();
+          
+            // Toast.MakeText(this, "Se cargo la categoria: " + CategSelecc.GetItemAtPosition(e.Position).ToString(), ToastLength.Long).Show();
 
         }
-
         public void LoadData()
         {
-            lstOrigenProductos = dbUser.VerListaProductos();
+            lstOrigenProductos = dbUser.VerListaProductosBusqueda("%");//dbUser.VerListaProductos();
             var adapter = new ProductoViewAdapter(this, lstOrigenProductos);
             lstDatosProductos.Adapter = adapter;
         }
-        //public void LoadDataCateg(int categoria)
-        //{
-        //    lstOrigenProductos = dbUser.VerListaProductosCategoria(categoria);
-        //    var adapter = new ProductoViewAdapter(this, lstOrigenProductos);
-        //    lstDatosProductos.Adapter = adapter;
-        //}
         public void LoadDataBusq(string producto)
         {
             lstOrigenProductos = dbUser.VerListaProductosBusqueda(producto);

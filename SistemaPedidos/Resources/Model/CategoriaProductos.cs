@@ -15,10 +15,10 @@ using SQLite;
 namespace SistemaPedidos.Resources.Model
 {
     public class CategoriaProductos
-    {
-        [PrimaryKey, AutoIncrement]
-        public int id { get; set; }
+    {       
+        public int id { get; set; }       
         public string nombre { get; set; }
+        public string sincro { get; set; }
         public override string ToString()
         {
             return nombre;
@@ -28,9 +28,10 @@ namespace SistemaPedidos.Resources.Model
     {
         [JsonProperty(PropertyName = "id")]
         public int id { get; set; }
-
         [JsonProperty(PropertyName = "nombre")]
         public string nombre { get; set; }
+        [JsonProperty(PropertyName = "sincro")]
+        public string sincro { get; set; }
 
         public override string ToString()
         {

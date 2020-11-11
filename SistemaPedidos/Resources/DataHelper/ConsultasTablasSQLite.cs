@@ -83,7 +83,7 @@ namespace SistemaPedidos.Resources.DataHelper
                 return false;
             }
         }
-        public List<CotizacionMoneda> VerDetalleMoneda(int idmoneda=2)
+        public List<CotizacionMoneda> VerDetalleMoneda(int idmoneda)
         {
             try
             {
@@ -185,6 +185,22 @@ namespace SistemaPedidos.Resources.DataHelper
                 Toast.MakeText(Application.Context, "SQLiteEx: " + ex.Message, ToastLength.Short).Show();
                 return null;
             }
+        }
+        public List<TablaClientes> BuscarClienteporLista(string nmLista)
+        {
+            try
+            {
+                using (var connection = new SQLiteConnection(System.IO.Path.Combine(folder, "kigest_sltosAriel.db")))
+                {
+                    return connection.Query<TablaClientes>("select * from TablaClientes where lista_precios " +
+                        "in(select id from ListasPrecio where nombre like '" + nmLista + "')").ToList();
+                }
+            }
+            catch (SQLiteException ex)
+            {
+                Toast.MakeText(Application.Context, "SQLiteEx: " + ex.Message, ToastLength.Short).Show();
+                return null;
+            } 
         }
         public List<TablaClientes> VerDetalleClienteMain(int codclieMain)
         {
@@ -343,7 +359,7 @@ namespace SistemaPedidos.Resources.DataHelper
             {
                 using (var connection = new SQLiteConnection(System.IO.Path.Combine(folder, "kigest_sltosAriel.db")))
                 {
-                    return connection.Query<Productos>("select * from Productos where categoria in (select id from CategoriaProductos where nombre Like '" + categoria + "')").ToList();
+                    return connection.Query<Productos>("select * from Productos where categoria in (select id from CategoriaProductos where sincro=1 and nombre Like '" + categoria + "')").ToList();
                 }
             }
             catch (SQLiteException ex)
@@ -358,7 +374,7 @@ namespace SistemaPedidos.Resources.DataHelper
             {
                 using (var connection = new SQLiteConnection(System.IO.Path.Combine(folder, "kigest_sltosAriel.db")))
                 {
-                    return connection.Query<Productos>("Select * from Productos where descripcion like '%" + producto +"%'").ToList();
+                    return connection.Query<Productos>("Select * from Productos where categoria in(select id from CategoriaProductos where sincro=1) and  descripcion like '%" + producto +"%'").ToList();
                 }
             }
             catch (SQLiteException ex)
@@ -373,7 +389,7 @@ namespace SistemaPedidos.Resources.DataHelper
             {
                 using (var connection = new SQLiteConnection(System.IO.Path.Combine(folder, "kigest_sltosAriel.db")))
                 {
-                    return connection.Query<Productos>("Select * from Productos where id=?",idproducto).ToList();
+                    return connection.Query<Productos>("Select * from  Productos where categoria in(select id from CategoriaProductos where sincro=1) and id=?", idproducto).ToList();
                 }
             }
             catch (SQLiteException ex)
@@ -388,7 +404,7 @@ namespace SistemaPedidos.Resources.DataHelper
             {
                 using (var connection = new SQLiteConnection(System.IO.Path.Combine(folder, "kigest_sltosAriel.db")))
                 {
-                    return connection.Query<Productos>("Select * from Productos where codProdMain=?", CodProducto).ToList();
+                    return connection.Query<Productos>("Select * from Productos where categoria in(select id from CategoriaProductos where sincro=1) and codProdMain=?", CodProducto).ToList();
                 }
             }
             catch (SQLiteException ex)
@@ -397,7 +413,6 @@ namespace SistemaPedidos.Resources.DataHelper
                 return null;
             }
         }
-
         public bool ActualizarProducto(Productos producto)
         {
             try
@@ -435,7 +450,7 @@ namespace SistemaPedidos.Resources.DataHelper
         }
 
         //******************************************************************
-        //tareas sobte tabla Listas de precios y descuentos
+        //tareas sobte tabla Listas de precios 
         //******************************************************************
 
         public bool InsertarListaPrecio(ListasPrecio ListasPrecio)
@@ -453,23 +468,7 @@ namespace SistemaPedidos.Resources.DataHelper
                 Log.Info("SQLiteException", ex.Message);
                 return false;
             }
-        }
-        public bool InsertarPromocionesDescuentos(PromocionesDescuentos  promocionesDescuentos)
-        {
-            try
-            {
-                using (var connection = new SQLiteConnection(System.IO.Path.Combine(folder, "kigest_sltosAriel.db")))
-                {
-                    connection.Insert(promocionesDescuentos);
-                    return true;
-                }
-            }
-            catch (SQLiteException ex)
-            {
-                Log.Info("SQLiteException", ex.Message);
-                return false;
-            }
-        }
+        }        
         public List<ListasPrecio> VerListaPrecio()
         {
             try
@@ -485,19 +484,20 @@ namespace SistemaPedidos.Resources.DataHelper
                 return null;
             }
         }
-        public List<PromocionesDescuentos> VerPromocionesDescuentos()
+        public bool VaciarTablaListasPrecio()
         {
             try
             {
                 using (var connection = new SQLiteConnection(System.IO.Path.Combine(folder, "kigest_sltosAriel.db")))
                 {
-                    return connection.Table<PromocionesDescuentos>().ToList();
+                    connection.Query<ListasPrecio>("DELETE FROM ListasPrecio");
+                    return true;
                 }
             }
             catch (SQLiteException ex)
             {
-                Toast.MakeText(Application.Context, "SQLiteEx: " + ex.Message, ToastLength.Short).Show();
-                return null;
+                Log.Info("SQLiteException", ex.Message);
+                return false;
             }
         }
         public List<ListasPrecio> VerListaPrecioId(int idLista)
@@ -515,13 +515,13 @@ namespace SistemaPedidos.Resources.DataHelper
                 return null;
             }
         }
-        public List<PromocionesDescuentos> VerPromocionesDescuentosId(int idPromDesc)
+        public List<ListasPrecio> ObtenerIDListaPrecios(string ListaTXT)
         {
             try
             {
                 using (var connection = new SQLiteConnection(System.IO.Path.Combine(folder, "kigest_sltosAriel.db")))
                 {
-                    return connection.Query<PromocionesDescuentos>("select * from PromocionesDescuentos where id=?", idPromDesc).ToList();
+                    return connection.Query<ListasPrecio>("select * from ListasPrecio where nombre like '" + ListaTXT + "'").ToList();
                 }
             }
             catch (SQLiteException ex)
@@ -537,7 +537,7 @@ namespace SistemaPedidos.Resources.DataHelper
                 using (var connection = new SQLiteConnection(System.IO.Path.Combine(folder, "kigest_sltosAriel.db")))
                 {
                     connection.Query<Usuarios>("UPDATE ListasPrecio set nombre=?, utilidad=?,auxcol=? " +
-                        "where id=?", ListasPrecio.nombre,ListasPrecio.utilidad, ListasPrecio.auxcol, ListasPrecio.id);
+                        "where id=?", ListasPrecio.nombre, ListasPrecio.utilidad, ListasPrecio.auxcol, ListasPrecio.id);
                     return true;
                 }
             }
@@ -547,6 +547,26 @@ namespace SistemaPedidos.Resources.DataHelper
                 return false;
             }
         }
+
+        //******************************************************************
+        //tareas sobte tabla  descuentos
+        //******************************************************************
+
+        public List<PromocionesDescuentos> VerPromocionesDescuentosId(int idPromDesc)
+        {
+            try
+            {
+                using (var connection = new SQLiteConnection(System.IO.Path.Combine(folder, "kigest_sltosAriel.db")))
+                {
+                    return connection.Query<PromocionesDescuentos>("select * from PromocionesDescuentos where id=?", idPromDesc).ToList();
+                }
+            }
+            catch (SQLiteException ex)
+            {
+                Toast.MakeText(Application.Context, "SQLiteEx: " + ex.Message, ToastLength.Short).Show();
+                return null;
+            }
+        }        
         public bool ActualizarPromocionesDescuentos(PromocionesDescuentos promocionesDescuentos)
         {
             try
@@ -565,13 +585,13 @@ namespace SistemaPedidos.Resources.DataHelper
                 return false;
             }
         }
-        public bool VaciarTablaListasPrecio()
+        public bool InsertarPromocionesDescuentos(PromocionesDescuentos promocionesDescuentos)
         {
             try
             {
                 using (var connection = new SQLiteConnection(System.IO.Path.Combine(folder, "kigest_sltosAriel.db")))
                 {
-                    connection.Query<ListasPrecio>("DELETE FROM ListasPrecio");
+                    connection.Insert(promocionesDescuentos);
                     return true;
                 }
             }
@@ -644,7 +664,21 @@ namespace SistemaPedidos.Resources.DataHelper
                 return null;
             }
         }
-
+        public List<PromocionesDescuentos> VerPromocionesDescuentos()
+        {
+            try
+            {
+                using (var connection = new SQLiteConnection(System.IO.Path.Combine(folder, "kigest_sltosAriel.db")))
+                {
+                    return connection.Table<PromocionesDescuentos>().ToList();
+                }
+            }
+            catch (SQLiteException ex)
+            {
+                Toast.MakeText(Application.Context, "SQLiteEx: " + ex.Message, ToastLength.Short).Show();
+                return null;
+            }
+        }
 
         //******************************************************************
         //tareas sobre la tabla categoria de productos
@@ -668,11 +702,12 @@ namespace SistemaPedidos.Resources.DataHelper
         }
         public List<CategoriaProductos> verCategoriaProductos()
         {
+            
             try
             {
                 using (var connection = new SQLiteConnection(System.IO.Path.Combine(folder, "kigest_sltosAriel.db")))
                 {
-                    return connection.Table<CategoriaProductos>().ToList();
+                    return connection.Query<CategoriaProductos>("Select * from CategoriaProductos where sincro=1 order by nombre asc").ToList();
                 }
             }
             catch (SQLiteException ex)

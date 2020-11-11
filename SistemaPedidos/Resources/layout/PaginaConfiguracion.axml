@@ -46,8 +46,30 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/txtCotizacionDolar" />
+    <TextView
+        android:text="Formula de calculo de precio"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/textView3" />
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/txtMetodoCalculo"
+        android:text="1" />
+    <TextView
+        android:text="Lista de precios a utilizar:"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/textView10" />
+	<Spinner
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:id="@+id/spnListaPrecios"
+		 />
     <Button
-        android:text="Guardar cotizacion"
+        android:text="Guardar configuraciones"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/btnCotizacionDolar" />
