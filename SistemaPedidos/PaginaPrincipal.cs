@@ -105,6 +105,7 @@ namespace SistemaPedidos
             var manejoTablas = FindViewById<Button>(Resource.Id.btnPrincManejoTablas);
             var actualizarApp = FindViewById<Button>(Resource.Id.btnPrincActualizarApp);
             var versionApp= FindViewById<TextView>(Resource.Id.appInfo);
+            var estadisticasVentas = FindViewById<Button>(Resource.Id.btnPrincVerEstadisticas);
             string folder = System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal);
             var versionAPPLICACION= VersionTracking.CurrentVersion;
             versionApp.Text = "Directorio de BD: " + folder+ "\n";
@@ -132,6 +133,10 @@ namespace SistemaPedidos
                 abrirWeb.SetData(Android.Net.Uri.Parse("http://66.97.35.86/sistemaPedidosAndroid/kigest.sistemapedidos.apk"));
 
                 StartActivity(abrirWeb);
+            };
+            estadisticasVentas.Click += delegate
+            {
+                StartActivity(typeof(verEstadisticas));
             };
 
             var verClientes = FindViewById<Button>(Resource.Id.btnPrincVerClientes);

@@ -192,7 +192,8 @@ namespace SistemaPedidos
                 observaciones= datosCliente[0].observaciones
             };
             await interfazModificarCliente.ModificarClienteServer(clienteServer);
-            }
+            //Toast.MakeText(this, interfazModificarCliente.ModificarClienteServer, ToastLength.Short).Show();
+        }
         private async void EliminarClienteServer()
         {
             JsonConvert.DefaultSettings = () => new JsonSerializerSettings()

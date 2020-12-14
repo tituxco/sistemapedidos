@@ -141,6 +141,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="VerEstadisticas.cs" />
     <Compile Include="Configuracion.cs" />
     <Compile Include="DetalleCliente.cs" />
     <Compile Include="MainActivity.cs" />
@@ -160,6 +161,7 @@
     <Compile Include="Resources\Model\Productos.cs" />
     <Compile Include="Resources\Model\Sincronizaciones.cs" />
     <Compile Include="Resources\Model\Usuarios.cs" />
+    <Compile Include="Resources\Model\Estadisticas.cs" />
     <Compile Include="Resources\Model\Vendedor.cs" />
     <Compile Include="Resources\PedidoDetalleViewAdapter.cs" />
     <Compile Include="Resources\PedidosViewAdapter.cs" />
@@ -303,6 +305,15 @@
       <Generator>MSBuild:UpdateGeneratedFiles</Generator>
       <SubType>Designer</SubType>
     </AndroidResource>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\layout\Estadisticas.axml">
+      <Generator>MSBuild:UpdateGeneratedFiles</Generator>
+      <SubType>Designer</SubType>
+    </AndroidResource>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\layout\PaginaPrincipal.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <Import Project="..\packages\Refit.4.6.48\build\netstandard1.4\refit.targets" Condition="Exists('..\packages\Refit.4.6.48\build\netstandard1.4\refit.targets')" />

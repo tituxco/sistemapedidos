@@ -59,6 +59,18 @@ namespace SistemaPedidos.Resources.Interface
         [Get("/webservicesltosariel/fact_CategoriaProductos_obtener.php")]
         Task<RespuestaServerCategProductos> GetServerCategProductos();
     }
+    interface IVerEstadisticasVentas
+    {
+        [Get("/webservicesltosariel/fact_verEstadisticasVenta_obtener.php?vendedor={vendedor}&desde={desde}&hasta={hasta}")]
+        Task<RespuestaEstadisticasVenta> verEstadisticasVentas(int vendedor,string desde, string hasta);
+    }
+
+    interface IVerDevolucionesTotales
+    {
+        [Get("/webservicesltosariel/fact_verDevolucionesTotales_obtener.php?vendedor={vendedor}&desde={desde}&hasta={hasta}")]
+        Task<RespuestaEstadisticasDevolucion> verDevolucionesTotales(int vendedor, string desde, string hasta);
+    }
+
     interface ISubirPedidoMaster
     {
         [Post("/webservicesltosariel/fact_pedidos_insertar.php")]
