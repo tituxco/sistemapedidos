@@ -22,6 +22,14 @@ namespace SistemaPedidos
         public static int IdPedidoenCurso=0;
         public static double CotizacionDolar = 0;
         public static double MetodoCalculo = 1;
-        
+        public static string DireccWebService = "";
+        public static string NombWebService = "";
+        public static string NombreVendedor = "";
+        public static string NombreEmpresa = "";
+        public static int activo = 0;
+        public static string version = "";
+
+
+
     }
 }

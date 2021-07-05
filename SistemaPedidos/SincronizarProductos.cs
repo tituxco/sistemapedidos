@@ -49,8 +49,8 @@ namespace SistemaPedidos
                 Converters = { new StringEnumConverter() }
             };
 
-            interfazProductos = RestService.For<IObtenerProductosServer>("http://66.97.35.86");
-            interfazCatprod = RestService.For<IObtenerCategoriaProductos>("http://66.97.35.86");
+            interfazProductos = RestService.For<IObtenerProductosServer>(VariablesGlobales.DireccWebService + VariablesGlobales.NombWebService);
+            interfazCatprod = RestService.For<IObtenerCategoriaProductos>(VariablesGlobales.DireccWebService + VariablesGlobales.NombWebService);
             
             SetContentView(Resource.Layout.ListaProductosServer);
 

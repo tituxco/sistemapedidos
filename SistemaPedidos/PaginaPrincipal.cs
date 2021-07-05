@@ -20,7 +20,8 @@ namespace SistemaPedidos
     public class PaginaPrincipal : Activity
     {
         ConsultasTablas dbUser;
-        List<CotizacionMoneda> moneda = new List<CotizacionMoneda>();
+        List<ConfiguracionesVarias> configuracionesVarias = new List<ConfiguracionesVarias>();
+        List<ConfiguracionesVariasServer > configuracionesVariasServer  = new List<ConfiguracionesVariasServer >();
         public override bool OnCreateOptionsMenu(IMenu menu)
         {
             MenuInflater.Inflate(Resource.Menu.MenuPrincipal, menu);
@@ -30,7 +31,7 @@ namespace SistemaPedidos
         {
             switch (item.ItemId)
             {
-                //acciones de los botones de menu
+                //acciones de los botones de menu   
                 case Resource.Id.btnMnuPrinVerClientes:
                     StartActivity(typeof(VerClientes));
                     return true;
@@ -52,51 +53,8 @@ namespace SistemaPedidos
             base.OnCreate(savedInstanceState);
             SetContentView(Resource.Layout.PaginaPrincipal);
             dbUser = new ConsultasTablas();
-            moneda = dbUser.VerListaMonedas();
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
-
-
-            if (moneda.Count == 0 || moneda.Count<4)
-            {
-                CotizacionMoneda monedaPeso = new CotizacionMoneda
-                {
-                    id = 1,
-                    nombre = "PESO",
-                    cotizacion = "1"
-                };
-                CotizacionMoneda monedaDolar = new CotizacionMoneda
-                {
-                    id = 2,
-                    nombre = "DOLAR",
-                    cotizacion = "1"
-                };
-                CotizacionMoneda FormulaCalculo = new CotizacionMoneda
-                {
-                    id = 3,
-                    nombre = "FormulaCalculo",
-                    cotizacion = "1"
-                };
-                CotizacionMoneda ListaDefecto = new CotizacionMoneda
-                {
-                    id = 4,
-                    nombre = "ListaDefecto",
-                    cotizacion = "0"
-                };
-                dbUser.InstertarNuevaMoneda(monedaPeso);
-                dbUser.InstertarNuevaMoneda(monedaDolar);
-                dbUser.InstertarNuevaMoneda(FormulaCalculo);
-                dbUser.InstertarNuevaMoneda(ListaDefecto);
-                VariablesGlobales.CotizacionDolar = 1;
-                VariablesGlobales.MetodoCalculo = 1;
-                VariablesGlobales.ListaPrecioCliente = 0;
-
-            }
-            else
-            {
-                VariablesGlobales.CotizacionDolar = double.Parse(moneda[1].cotizacion);
-                VariablesGlobales.MetodoCalculo = int.Parse(moneda[2].cotizacion);
-                VariablesGlobales.ListaPrecioCliente = int.Parse(moneda[3].cotizacion);
-            }
+            
             
             var sincroClientes = FindViewById<Button>(Resource.Id.btnPrincSincroClie);
             var sincroProductos = FindViewById<Button>(Resource.Id.btnPrincSincProd);
@@ -110,6 +68,9 @@ namespace SistemaPedidos
             var versionAPPLICACION= VersionTracking.CurrentVersion;
             versionApp.Text = "Directorio de BD: " + folder+ "\n";
             versionApp.Text = versionApp.Text + "Versión de la aplicación: "  + versionAPPLICACION;
+            var InfoServer = FindViewById<TextView>(Resource.Id.infoVendedor);
+
+            InfoServer.Text = "Vendedor: " + VariablesGlobales.NombWebService  ;
             
             sincroClientes.Click += delegate
             {
@@ -130,7 +91,7 @@ namespace SistemaPedidos
             actualizarApp.Click += delegate
             {
                 Intent abrirWeb = new Intent(Intent.ActionView);
-                abrirWeb.SetData(Android.Net.Uri.Parse("http://66.97.35.86/sistemaPedidosAndroid/kigest.sistemapedidos.apk"));
+                abrirWeb.SetData(Android.Net.Uri.Parse("http://authkibit.donweb-remoteip.net/sistemaPedidosAndroid/kigest.sistemapedidos.apk"));
 
                 StartActivity(abrirWeb);
             };
@@ -154,9 +115,7 @@ namespace SistemaPedidos
             verPedidos.Click += delegate
             {
                 StartActivity(typeof(VerPedidos));
-            };
-
-           
+            };           
         }
     }
 }

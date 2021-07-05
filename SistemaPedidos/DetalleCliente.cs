@@ -179,7 +179,7 @@ namespace SistemaPedidos
                 ContractResolver = new CamelCasePropertyNamesContractResolver(),
                 Converters = { new StringEnumConverter() }
             };
-            interfazModificarCliente = RestService.For<IModificarClienteServer>("http://66.97.35.86");           
+            interfazModificarCliente = RestService.For<IModificarClienteServer>(VariablesGlobales.DireccWebService + VariablesGlobales.NombWebService);           
             List<TablaClientes> datosCliente = new List<TablaClientes>();            
             datosCliente = dbUser.VerDetalleCliente(IdClienteSel);            
             ClienteServer clienteServer = new ClienteServer 
@@ -201,7 +201,7 @@ namespace SistemaPedidos
                 ContractResolver = new CamelCasePropertyNamesContractResolver(),
                 Converters = { new StringEnumConverter() }
             };
-            interfazEliminarCliente = RestService.For<IEliminarClienteServer>("http://66.97.35.86");
+            interfazEliminarCliente = RestService.For<IEliminarClienteServer>(VariablesGlobales.DireccWebService + VariablesGlobales.NombWebService);
             List<TablaClientes> datosCliente = new List<TablaClientes>();
             datosCliente = dbUser.VerDetalleCliente(IdClienteSel);
             ClienteServer clienteServer = new ClienteServer

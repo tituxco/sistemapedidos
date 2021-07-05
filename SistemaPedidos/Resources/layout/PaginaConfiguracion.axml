@@ -12,11 +12,6 @@
         android:minHeight="25px"
         android:id="@+id/btnVaciarProductos" />
     <Button
-        android:text="vaciar tabla categoria productos"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/btnVaciarCategorias" />
-    <Button
         android:text="Vaciar tabla clientes"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -26,11 +21,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/btnVaciarPedidos" />
-    <Button
-        android:text="vaciar tabla detalle pedidos"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/btnVariarDetallePed" />
     <Button
         android:text="vaciar tabla listas de precio"
         android:layout_width="match_parent"
@@ -63,11 +53,32 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/textView10" />
-	<Spinner
-		android:layout_width="match_parent"
-		android:layout_height="wrap_content"
-		android:id="@+id/spnListaPrecios"
+    <Spinner
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/spnListaPrecios"
 		 />
+    <TextView
+        android:text="Direccion del web service"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/textView5" />
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/txtDireccionWebService" 
+        />
+    <TextView
+        android:text="Nombre del Web Service"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/textView7" />
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/txtNombWebService" />
     <Button
         android:text="Guardar configuraciones"
         android:layout_width="match_parent"

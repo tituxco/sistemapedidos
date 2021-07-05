@@ -27,14 +27,12 @@ namespace SistemaPedidos.Resources.Model
         public int vendedor { get; set; }   
         public int activo { get; set; }
     }    
-
     public class UsuariosServer
     {
         [JsonProperty(PropertyName = "id")]
         public int id { get; set; }
         [JsonProperty(PropertyName = "activo")]
         public int activo { get; set; }
-
     }
     public class RespuestaServerUsuarios
     {
@@ -51,6 +49,5 @@ namespace SistemaPedidos.Resources.Model
         {
             return mensaje;
         }
-
     }
 }

@@ -25,13 +25,43 @@ namespace SistemaPedidos.Resources.Model
             return nombre;
         }
     }
-
-    public class CotizacionMoneda
+    public class ConfiguracionesVarias
     {
         public int id { get; set; }
         public string nombre { get; set; }
-        public string cotizacion { get; set; }
+        public string valor { get; set; }
     }
+    public class ConfiguracionesVariasServer
+    {        
+        [JsonProperty(PropertyName = "vendedor")]
+        public string vendedor { get; set; }
+        [JsonProperty(PropertyName = "activo")]
+        public string activo { get; set; }        
+        [JsonProperty(PropertyName = "version")]
+        public string version { get; set; }
+        public override string ToString()
+        {
+            return vendedor;
+        }
+    }
+    public class RespuestaServerConfiguraciones
+    {
+        [JsonProperty(PropertyName = "estado")]
+        public string estado { get; set; }
+
+        [JsonProperty(PropertyName = "mensaje")]
+        public string mensaje { get; set; }
+
+        [JsonProperty(PropertyName = "configuraciones")]
+        public List<ConfiguracionesVariasServer > ConfiguracionesServer { get; set; }
+
+        public override string ToString()
+        {
+            return mensaje;
+        }
+
+    }
+
     public class ListasPrecioServer
     {
         [JsonProperty(PropertyName = "id")]

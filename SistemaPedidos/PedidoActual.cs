@@ -487,8 +487,8 @@ namespace SistemaPedidos
                 ContractResolver = new CamelCasePropertyNamesContractResolver(),
                 Converters = { new StringEnumConverter() }
             };
-            interfazPedidoMaster = RestService.For<ISubirPedidoMaster>("http://66.97.35.86");
-            interfazPedidoDetalle=RestService.For<ISubirPedidoDetalle>("http://66.97.35.86");
+            interfazPedidoMaster = RestService.For<ISubirPedidoMaster>(VariablesGlobales.DireccWebService + VariablesGlobales.NombWebService);
+            interfazPedidoDetalle=RestService.For<ISubirPedidoDetalle>(VariablesGlobales.DireccWebService + VariablesGlobales.NombWebService);
 
             List<PedidosMaster> masterPed = new List<PedidosMaster>();
             List<PedidosDetalle> detallePed = new List<PedidosDetalle>();

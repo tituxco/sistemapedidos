@@ -31,7 +31,7 @@
         android:text="ESTADISTICAS DE VENTA (ALFA)"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/btnPrincVerEstadisticas" 
+        android:id="@+id/btnPrincVerEstadisticas"
         android:visibility="invisible"/>
     <TextView
         android:text="TAREAS DE SINCRONIZACION"
@@ -73,4 +73,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/appInfo" />
+<TextView
+        android:text="Vendedor: "
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/infoVendedor" />
 </LinearLayout >

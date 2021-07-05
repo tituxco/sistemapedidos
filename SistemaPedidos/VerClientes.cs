@@ -52,7 +52,7 @@ namespace SistemaPedidos
             btnAgregar.Click += delegate
             {
                 Intent abrirWeb = new Intent(Intent.ActionView);
-                abrirWeb.SetData(Android.Net.Uri.Parse("http://66.97.35.86/pedidos_test"));
+                abrirWeb.SetData(Android.Net.Uri.Parse("http://authkibit.donweb-remoteip.net/pedidos_test"));
 
                 StartActivity(abrirWeb);
             };

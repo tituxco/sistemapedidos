@@ -99,7 +99,7 @@ namespace SistemaPedidos
         {
             try
             {                
-                //interfazVendedor = RestService.For<IObtenerEstadoVendedor>("http://66.97.35.86");
+                //interfazVendedor = RestService.For<IObtenerEstadoVendedor>(VariablesGlobales.DireccWebService + VariablesGlobales.NombWebService);
                 //RespuestaServerUsuarios  re= await interfazVendedor.GetServerUsuarios();
                 //nada mas
 

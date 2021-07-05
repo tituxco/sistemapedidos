@@ -47,7 +47,7 @@ namespace SistemaPedidos
                 Converters = { new StringEnumConverter() }
             };
 
-            interfazClientes = RestService.For<IObtenerClientesServer>("http://66.97.35.86");            
+            interfazClientes = RestService.For<IObtenerClientesServer>(VariablesGlobales.DireccWebService + VariablesGlobales.NombWebService);            
             
             SetContentView(Resource.Layout.ListaClientesServer);
             

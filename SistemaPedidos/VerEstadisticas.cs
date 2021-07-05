@@ -40,8 +40,8 @@ namespace SistemaPedidos
         
             var txtTotalVentas = FindViewById<TextView>(Resource.Id.txtEstadisticasTotalVentas);
 
-            interfazEstadisticasVentas = RestService.For<IVerEstadisticasVentas>("http://66.97.35.86");
-            interfazDevolucionesTotales = RestService.For<IVerDevolucionesTotales>("http://66.97.35.86");
+            interfazEstadisticasVentas = RestService.For<IVerEstadisticasVentas>(VariablesGlobales.DireccWebService + VariablesGlobales.NombWebService);
+            interfazDevolucionesTotales = RestService.For<IVerDevolucionesTotales>(VariablesGlobales.DireccWebService + VariablesGlobales.NombWebService);
 
             var btnObtenerEstadisticas = FindViewById<Button>(Resource.Id.btnEstadisticasObtener);
             btnObtenerEstadisticas.Click += delegate

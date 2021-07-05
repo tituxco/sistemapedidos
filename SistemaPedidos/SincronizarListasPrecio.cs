@@ -51,8 +51,8 @@ namespace SistemaPedidos
                 Converters = { new StringEnumConverter() }
             };
 
-            interfaz = RestService.For<IObtenerListaPrecio>("http://66.97.35.86");
-            //interfaz2 = RestService.For<IObtenerPromocionesDescuentos>("http://66.97.35.86");
+            interfaz = RestService.For<IObtenerListaPrecio>(VariablesGlobales.DireccWebService + VariablesGlobales.NombWebService);
+            //interfaz2 = RestService.For<IObtenerPromocionesDescuentos>(VariablesGlobales.DireccWebService + VariablesGlobales.NombWebService);
 
             SetContentView(Resource.Layout.ListasPrecioServer);
             var btnSincronizar = FindViewById<Button>(Resource.Id.btnListasServerSincronizar);

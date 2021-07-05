@@ -44,7 +44,6 @@ namespace SistemaPedidos.Resources.Model
         }
 
     }
-
     public class EstadisticasDevolucion
     {
         [JsonProperty(PropertyName = "totDevolucion")]
@@ -73,7 +72,6 @@ namespace SistemaPedidos.Resources.Model
         }
 
     }
-
     public class EstadisticasVentasComisObjetivo
     {
         [JsonProperty(PropertyName = "tipoComis")]
@@ -105,7 +103,6 @@ namespace SistemaPedidos.Resources.Model
         }
 
     }
-
     public class EstadisticasDevolucionComisObjetivo
     {
         [JsonProperty(PropertyName = "tipoComis")]

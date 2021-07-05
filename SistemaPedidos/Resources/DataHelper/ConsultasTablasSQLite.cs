@@ -36,7 +36,7 @@ namespace SistemaPedidos.Resources.DataHelper
                     connection.CreateTable<CategoriaProductos>();
                     connection.CreateTable<TablaSincronizaciones>();
                     connection.CreateTable<PromocionesDescuentos>();
-                    connection.CreateTable<CotizacionMoneda>();
+                    connection.CreateTable<ConfiguracionesVarias>();
                     return true;
                 }
             }
@@ -52,13 +52,13 @@ namespace SistemaPedidos.Resources.DataHelper
         //tareas sobre tabla COTIZACION DE MONEDAS
         //******************************************************************
 
-        public List<CotizacionMoneda> VerListaMonedas()
+        public List<ConfiguracionesVarias> VerListaConfiguraciones()
         {
             try
             {
                 using (var connection = new SQLiteConnection(System.IO.Path.Combine(folder, "kigest_sltosAriel.db")))
                 {
-                    return connection.Table<CotizacionMoneda>().ToList();
+                    return connection.Table<ConfiguracionesVarias>().ToList();
                 }
             }
             catch (SQLiteException ex)
@@ -67,13 +67,13 @@ namespace SistemaPedidos.Resources.DataHelper
                 return null;
             }
         }
-        public bool InstertarNuevaMoneda(CotizacionMoneda nvaMoneda)
+        public bool InsertarNvaConfiguracion(ConfiguracionesVarias nvaConfiguracion)
         {
             try
             {
                 using (var connection = new SQLiteConnection(System.IO.Path.Combine(folder, "kigest_sltosAriel.db")))
                 {
-                    connection.Insert(nvaMoneda);
+                    connection.Insert(nvaConfiguracion);
                     return true;
                 }
             }
@@ -83,13 +83,13 @@ namespace SistemaPedidos.Resources.DataHelper
                 return false;
             }
         }
-        public List<CotizacionMoneda> VerDetalleMoneda(int idmoneda)
+        public List<ConfiguracionesVarias> VerDetalleConfiguracion(int idCOnfiguracion)
         {
             try
             {
                 using (var connection = new SQLiteConnection(System.IO.Path.Combine(folder, "kigest_sltosAriel.db")))
                 {
-                    return connection.Query<CotizacionMoneda>("select cotizacion  from CotizacionMoneda where id=?", idmoneda ).ToList();
+                    return connection.Query<ConfiguracionesVarias>("select valor  from ConfiguracionesVarias where id=?", idCOnfiguracion ).ToList();
                 }
             }
             catch (SQLiteException ex)
@@ -99,13 +99,30 @@ namespace SistemaPedidos.Resources.DataHelper
                 return null;
             }
         }
-        public bool ActualizarMoneda(CotizacionMoneda  Moneda)
+        public bool ActualizarConfiguracion(ConfiguracionesVarias  Configuracion)
         {
             try
             {
                 using (var connection = new SQLiteConnection(System.IO.Path.Combine(folder, "kigest_sltosAriel.db")))
                 {
-                    connection.Query<TablaClientes>("update CotizacionMoneda set cotizacion=? where id=?", Moneda.cotizacion,Moneda.id);
+                    connection.Query<TablaClientes>("update ConfiguracionesVarias set valor=? where id=?", Configuracion.valor,Configuracion.id);
+                    return true;
+                }
+            }
+            catch (SQLiteException ex)
+            {
+                Log.Info("SQLiteException", ex.Message);
+                return false;
+            }
+        }
+
+        public bool VaciarTablaConfiguraciones()
+        {
+            try
+            {
+                using (var connection = new SQLiteConnection(System.IO.Path.Combine(folder, "kigest_sltosAriel.db")))
+                {
+                    connection.Query<ConfiguracionesVarias>("DELETE FROM ConfigracionesVarias");
                     return true;
                 }
             }
@@ -202,6 +219,24 @@ namespace SistemaPedidos.Resources.DataHelper
                 return null;
             } 
         }
+
+        public List<ListasPrecio> VerListaPreciosVendedor(int idVendedor)
+        {
+            try
+            {
+                using (var connection = new SQLiteConnection(System.IO.Path.Combine(folder, "kigest_sltosAriel.db")))
+                {
+                    return connection.Query<ListasPrecio>("select * from ListasPrecio " +
+                        "where id in(select lista_precios from TablaClientes where vendedor="+idVendedor +") limit 1").ToList();
+                }
+            }
+            catch (SQLiteException ex)
+            {
+                Toast.MakeText(Application.Context, "SQLiteEx: " + ex.Message, ToastLength.Short).Show();
+                return null;
+            }
+        }
+
         public List<TablaClientes> VerDetalleClienteMain(int codclieMain)
         {
             try
@@ -739,7 +774,7 @@ namespace SistemaPedidos.Resources.DataHelper
             {
                 using (var connection = new SQLiteConnection(System.IO.Path.Combine(folder, "kigest_sltosAriel.db")))
                 {
-                    connection.Query<CategoriaProductos>("DELETE FROM CategoriasProductos");
+                    connection.Query<CategoriaProductos>("DELETE FROM CategoriaProductos");
                     return true;
                 }
             }
