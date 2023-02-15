@@ -28,8 +28,5 @@ namespace SistemaPedidos
         public static string NombreEmpresa = "";
         public static int activo = 0;
         public static string version = "";
-
-
-
     }
 }

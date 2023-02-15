@@ -175,6 +175,8 @@ namespace SistemaPedidos
                                 VariablesGlobales.ListaPrecioCliente, selectPrecio[0].calcular_precio );
                     
                     PrecioProd.Hint = "Precio: $" + PrecioProdSel;
+                    //cantProd.Hint= aca ponemos la cantidad minima a pedir
+
                     alertDialog.Show();
                 };
             }            

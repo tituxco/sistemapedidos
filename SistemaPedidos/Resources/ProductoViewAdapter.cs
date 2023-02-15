@@ -61,7 +61,7 @@ namespace SistemaPedidos.Resources
             var Promos= view.FindViewById<TextView>(Resource.Id.txtProductoPromos);
             Descripcion.Text = lstProductos[position].descripcion;
 
-            Codigo.Text = "CODIGO: " + lstProductos[position].codigo; //+lstProductos[position].codProdMain+") "+ lstProductos[position].codigo;
+            Codigo.Text = "CODIGO: " + lstProductos[position].codigo;
             Descripcion.Tag = lstProductos[position].id;
             Presentacion.Text = "PRESENTACION: X" + lstProductos[position].presentacion;
             Precio.Text = funcionesGlobales.CalcularPrecioLista(lstProductos[position].precio, 
